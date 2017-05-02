@@ -1,0 +1,29 @@
+{
+  "name": "frontend",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "axios": "^0.16.1",
+    "jquery": "^3.2.1",
+    "material-ui": "^0.17.4",
+    "materialize-css": "^0.98.1",
+    "react": "^15.4.2",
+    "react-cookie": "^1.0.5",
+    "react-dom": "^15.4.2",
+    "react-facebook-login-component": "^0.7.0",
+    "react-google-login-component": "^0.7.0",
+    "react-native-circular-action-menu": "^0.4.0",
+    "react-native-simple-login": "^1.1.0",
+    "react-tap-event-plugin": "^2.0.1",
+    "socket.io-client": "^1.7.3"
+  },
+  "devDependencies": {
+    "react-scripts": "0.9.5"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  }
+}
