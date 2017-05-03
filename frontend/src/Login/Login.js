@@ -32,7 +32,16 @@ class Login extends Component {
             .then(response => response.json())
             .then(json => {
                 this.setState({
-                    debug : this.state.debug + json.message + '\n'
+                        
+                    if(json.message == "Login ok"){
+
+                }
+                if(json.message == "Error 404"){
+
+                }
+                if(json.message == "Username or Password wrong"){
+
+                }
                 });
             }).catch(error => {
             console.error(error);

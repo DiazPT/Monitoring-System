@@ -17,14 +17,20 @@ app.post('/api/login', function(req, res) {
     recordmodel.User.findOne({username:req.body.username, password:req.body.password}, function(err,User){
         if (err) {
             console.error(err);
+            res.send({message : 'Error 404'})
         } else { // sucess send the array of online users
             console.log(User);
+
+            if(User == null)
+            res.send({message : 'Username or Password wrong'});
+            else
+                res.send({message : 'Login ok'});
 
 
             //res.render('viewRecords', templateData); // renders the view records layout with the data
         }
     });
-  res.send({message : 'TO DO: Log a user/producer in.'});
+
 
 });
 
