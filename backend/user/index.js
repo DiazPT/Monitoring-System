@@ -23,6 +23,7 @@ app.post('/api/user/register', function(req, res) {
                     email : req.body.email,
                     username: req.body.username,
                     password: req.body.password,
+                    date_registered: this.setTime(this.getTime()+h*60*60*1000),
                 });
 
 

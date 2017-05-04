@@ -1,0 +1,9 @@
+//this.api_producer_register = this.api_producer_register.bind(this);
+//this.api_producer_product_model_add = this.api_producer_product_model_add.bind(this);
+//this.api_producer_product_model_remove = this.api_producer_product_model_remove.bind(this);
+//this.api_producer_device_type_add = this.api_producer_device_type_add.bind(this);
+//this.api_producer_device_type_remove = this.api_producer_device_type_remove.bind(this);
+//this.api_producer_device_type_history = this.api_producer_device_type_history.bind(this);
+//this.api_user_register = this.api_user_register.bind(this);
+//this.api_user_devices = this.api_user_devices.bind(this);
+//this.api_user_history = this.api_user_history.bind(this);

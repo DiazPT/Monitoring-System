@@ -303,12 +303,6 @@ class Demo extends React.Component {
     render() {
         return (
             <div className="row col s12">
-              <div className="row center-left">
-                <a>Username:</a>
-                <input type="text" name="Username" value={this.Username}/>
-                <a>Password:</a>
-                <input type="Password" name="Password" value={this.Password}/>
-              </div>
               <div className="row col s6">
                 <div className="row center-align">
                   <a onClick={this.api_device_add} className="waves-effect waves-light btn cyan accent-4">add a device</a>

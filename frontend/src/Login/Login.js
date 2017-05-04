@@ -5,7 +5,10 @@ import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import {Tabs, Tab} from 'material-ui/Tabs';
 import FontIcon from 'material-ui/FontIcon';
-import Demo from '../demo.js';
+import history from '../history'
+
+
+
 
 class Login extends Component {
     constructor(props){
@@ -32,17 +35,23 @@ class Login extends Component {
             .then(response => response.json())
             .then(json => {
                 this.setState({
-                        
-                    if(json.message == "Login ok"){
-
-                }
-                if(json.message == "Error 404"){
-
-                }
-                if(json.message == "Username or Password wrong"){
-
-                }
                 });
+                if(json.message === 'Login user'){
+                    history.push('/user');
+                    window.location = "/user";
+
+                }
+                if(json.message === 'Login producer'){
+                    //history.push('/producer');
+                    //window.location = "/producer";
+
+                }
+                if(json.message === 'Error 404'){
+                    alert("Database has some problems")
+                }
+                if(json.message === 'Username or Password wrong'){
+                    alert("Username or Password Wrong");
+                }
             }).catch(error => {
             console.error(error);
         });

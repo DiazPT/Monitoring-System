@@ -21,13 +21,18 @@ app.post('/api/login', function(req, res) {
         } else { // sucess send the array of online users
             console.log(User);
 
-            if(User == null)
-            res.send({message : 'Username or Password wrong'});
+            if(User == null){
+                recordmodel.Producer.findOne({username:req.body.username, password:req.body.password}, function(err,Producer){
+                    if(Producer ==null)
+                        res.send({message : 'Username or Password wrong'});
+                    else
+                        res.send({message : 'Login Producer'});
+                });
+            }
+
             else
-                res.send({message : 'Login ok'});
+                res.send({message : 'Login user'});
 
-
-            //res.render('viewRecords', templateData); // renders the view records layout with the data
         }
     });
 

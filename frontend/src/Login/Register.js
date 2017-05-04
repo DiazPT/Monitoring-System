@@ -13,7 +13,7 @@ class Register extends Component {
             name:'',
             email:'',
             password:'',
-            data_regist:'',
+            data_register:'',
             username:''
         }
     }
