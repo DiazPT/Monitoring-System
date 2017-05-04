@@ -8,13 +8,13 @@ const createSmoothParams = ({ x, y }) => ([
     x: spring(x, { stiffness: 1500, damping: 50 }),
     y: spring(y, { stiffness: 1500, damping: 50 }),
   }, {
-    scaleX: spring(0.5, { stiffness: 120, damping: 20 }),
-    scaleY: spring(0.5, { stiffness: 120, damping: 20 }),
+    scaleX: spring(1.5, { stiffness: 120, damping: 20 }),
+    scaleY: spring(1.5, { stiffness: 120, damping: 20 }),
     x: spring(x, { stiffness: 120, damping: 20 }),
     y: spring(y, { stiffness: 120, damping: 20 }),
   }, {
-    scaleX: spring(1, { stiffness: 120, damping: 20 }),
-    scaleY: spring(1, { stiffness: 120, damping: 20 }),
+    scaleX: spring(1.5, { stiffness: 120, damping: 20 }),
+    scaleY: spring(1.5, { stiffness: 120, damping: 20 }),
     x: spring(x, { stiffness: 120, damping: 20 }),
     y: spring(y, { stiffness: 120, damping: 20 }),
   },

@@ -30,8 +30,17 @@ app.post('/api/login', function(req, res) {
                 });
             }
 
-            else
-                res.send({message : 'Login user'});
+            else{
+                var token = jwt.sign(user, app.get('superSecret'), {
+                    expiresInMinutes: 1440 // expires in 24 hours
+                });
+                res.json({
+                    message: 'Login user',
+                    token: token
+                });
+                //res.send({message : 'Login user'});
+            }
+
 
         }
     });

@@ -8,19 +8,29 @@ import FontIcon from 'material-ui/FontIcon';
 import history from '../history'
 
 
+var State = {
+    username:'',
+    password:'',
+};
 
+const style = {
+    margin: 15,
+};
 
 class Login extends Component {
     constructor(props){
         super(props);
         this.state={
             username:'',
-            password:''
+            password:'',
+            //usernamelogin:'',
+            //passwordlogin:''
         }
 
         //this.handleClick = this.handleClick(event).bind(this);
 
     }
+
 
 
     handleClick(event){
@@ -37,9 +47,13 @@ class Login extends Component {
                 this.setState({
                 });
                 if(json.message === 'Login user'){
-                    history.push('/user');
-                    window.location = "/user";
 
+                    //State.username=this.state.username;
+                    //State.password=this.state.password;
+
+
+                    history.push('/user');
+                    //window.location = "/user";
                 }
                 if(json.message === 'Login producer'){
                     //history.push('/producer');
@@ -87,9 +101,10 @@ class Login extends Component {
         );
     }
 }
-const style = {
-    margin: 15,
-};
 
 
-export default Login;
+
+module.exports.Login = Login;
+//module.exports.State = State;
+    //username: this.state.usernamelogin,
+    //password: this.state.passwordlogin
