@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 
     <!--Import Google Icon Font-->
-    <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <!-- Compiled and minified CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.1/css/materialize.min.css">
     <title>Monitoring System</title>
@@ -45,9 +45,9 @@
 
     .button {
       text-align: center;
-      height: 50px;
-      line-height: 50px;
-      width: 50px;
+      height: 100px;
+      line-height: 110px;
+      width: 100px;
       border: solid 1px #fff;
       color: #fff;
       border-radius: 5px;
@@ -58,6 +58,27 @@
       font-size: 12px;
       margin: 0 0 0 10px;
     }
+
+    .sidebar {
+      position: absolute;
+      top: 60px;
+      left: -300px;
+      height: 100%;
+      width: 300px;
+      transition: left .3s ease-in-out;
+    }
+
+
+    .metismenu {
+      position: fixed;
+      width: 280px;
+
+      bottom: 0;
+      left: 0;
+      top: 0;
+    }
+
+
   </style>
   <body>
 

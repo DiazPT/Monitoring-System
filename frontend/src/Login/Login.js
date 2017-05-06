@@ -8,10 +8,7 @@ import FontIcon from 'material-ui/FontIcon';
 import history from '../history'
 
 
-var State = {
-    username:'',
-    password:'',
-};
+
 
 const style = {
     margin: 15,
@@ -23,6 +20,7 @@ class Login extends Component {
         this.state={
             username:'',
             password:'',
+            token: null,
             //usernamelogin:'',
             //passwordlogin:''
         }
@@ -46,19 +44,42 @@ class Login extends Component {
             .then(json => {
                 this.setState({
                 });
-                if(json.message === 'Login user'){
+                if(json.message === 'Login ok'){
 
+                    this.state.token= json.token;
+                    localStorage.setItem('token',this.state.token);
                     //State.username=this.state.username;
                     //State.password=this.state.password;
 
+                    alert("aqui");
+                    console.log("aqui");
 
+                    var io = require('socket.io-client');
+                    var socket = io.connect('http://localhost:3000');
+                    socket.on('connect', () => {
+                        alert("Successfully connected!");
+                    });
+                    //socket.emit('connected');
+                    //io.on('connection', function(client){});
+                    //io.listen(3000);
+
+
+
+
+                    alert("connected to Socket " + io);
+
+
+                    alert("ola");
+                    socket.disconnect();
                     history.push('/user');
-                    //window.location = "/user";
+                    window.location = "/user";
                 }
                 if(json.message === 'Login producer'){
                     //history.push('/producer');
                     //window.location = "/producer";
-
+                    this.state.token= json.token;
+                    alert('producer');
+                    history.push('/producer');
                 }
                 if(json.message === 'Error 404'){
                     alert("Database has some problems")
@@ -104,7 +125,7 @@ class Login extends Component {
 
 
 
-module.exports.Login = Login;
+export default Login;
 //module.exports.State = State;
     //username: this.state.usernamelogin,
     //password: this.state.passwordlogin

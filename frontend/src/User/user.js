@@ -3,7 +3,14 @@ import MotionMenu from './index';
 import history from '../history';
 
 
+const style = {
+    backgroundColor: '#01A9DB',
+
+};
+
 class Menu extends Component {
+
+
 
     constructor(props) {
         super(props);
@@ -15,10 +22,10 @@ class Menu extends Component {
         }
 
         this.api_device_add = this.api_device_add.bind(this);
-        //this.api_device_remove = this.api_device_remove.bind(this);
+        this.api_device_remove = this.api_device_remove.bind(this);
         this.api_device_history = this.api_device_history.bind(this);
-        //this.api_device_state = this.api_device_state.bind(this);
-        //this.api_device_monitor = this.api_device_monitor.bind(this);
+        this.api_device_state = this.api_device_state.bind(this);
+        this.api_device_monitor = this.api_device_monitor.bind(this);
     }
 
 
@@ -33,6 +40,19 @@ class Menu extends Component {
 
     }
 
+    api_device_remove(){
+
+    }
+
+    api_device_state(){
+
+    }
+
+    api_device_monitor(){
+
+    }
+
+
 
     render() {
         /*var user = require('../Login/Login');
@@ -46,10 +66,16 @@ class Menu extends Component {
         }
         else{*/
             //alert(this.state.username);
+
+        if(localStorage.getItem('token') === null){
+            alert("aquiiii");
+            window.location="./";
+        }
+
             return (
                 <MotionMenu
                     type="circle"
-                    margin={120}
+                    margin={200}
                     y={0}
                     bumpy
                     x={0}
@@ -59,18 +85,22 @@ class Menu extends Component {
                     onOpen={() => console.log('onOpen')}
                     onClose={() => console.log('onClose')}
                 >
-                    <div className="button" ><i className="fa fa-bars" /></div>
-                    <div className="button" onClick={(event) => this.api_device_add()}><i className="fa fa-plus" /></div>
-                    <div className="button" onClick={(event) => this.api_device_history()}><i className="fa fa-cloud" /></div>
-                    <div className="button"><i className="fa fa-home" /></div>
-                    <div className="button"><i className="fa fa-flash" /></div>
-                    <div className="button"><i className="fa fa-heart" /></div>
-                    <div className="button"><i className="fa fa-globe" /></div>
-                    <div className="button"><i className="fa fa-plug" /></div>
+                    <div className="button"  ><i className="fa fa-bars fa-2x" /></div>
+                    <div className="button" style={style}  onClick={(event) => this.api_device_add()}><i className="fa fa-plus fa-2x" /></div>
+                    <div className="button" style={style} onClick={(event) => this.api_device_history()}><i className="fa fa-history fa-2x" /></div>
+                    <div className="button" style={style} onClick={(event) => this.api_device_remove()}><i className="fa fa-trash fa-2x" /></div>
+                    <div className="button" style={style} onClick={(event) => this.api_device_state()}><i className="fa fa-power-off fa-2x" /></div>
+                    <div className="button" style={style} onClick={(event) => this.api_device_monitor()}><i className="fa fa-list-alt fa-2x" /></div>
+
                 </MotionMenu>
+
             );
         //}
 
     }
 }
 export default Menu;
+
+
+/*<div className="button" style={style}><i className="fa fa-globe" /></div>
+<div className="button" style={style}><i className="fa fa-plug" /></div>*/

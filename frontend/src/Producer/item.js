@@ -28,14 +28,14 @@ const createBumpyParams = (x, y) => ([
     y: spring(y, { stiffness: 1500, damping: 50 }),
   },
   {
-    scaleX: spring(1.6, { stiffness: 1500, damping: 150 }),
-    scaleY: spring(0.7, { stiffness: 1500, damping: 150 }),
+    scaleX: spring(1, { stiffness: 1500, damping: 150 }),
+    scaleY: spring(1, { stiffness: 1500, damping: 150 }),
     x: spring(x, { stiffness: 1500, damping: 100 }),
     y: spring(y, { stiffness: 1500, damping: 100 }),
   },
   {
-    scaleX: spring(1.5, { stiffness: 1500, damping: 18 }),
-    scaleY: spring(1.5, { stiffness: 1500, damping: 18 }),
+    scaleX: spring(1, { stiffness: 1500, damping: 18 }),
+    scaleY: spring(1, { stiffness: 1500, damping: 18 }),
     x: spring(x, { stiffness: 1500, damping: 100 }),
     y: spring(y, { stiffness: 1500, damping: 100 }),
   },

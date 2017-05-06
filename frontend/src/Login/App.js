@@ -9,7 +9,7 @@ import LoginScreen from './Loginscreen';
 //injectTapEventPlugin();
 import './App.css';
 
-class App extends Component {
+class Applogin extends Component {
     constructor(props){
         super(props);
         this.state={
@@ -48,4 +48,4 @@ class App extends Component {
 /*const style = {
     margin: 15,
 };*/
-export default App;
+export default Applogin;
