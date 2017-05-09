@@ -11,7 +11,21 @@ import history from '../history'
 
 
 const style = {
-    margin: 15,
+    marginTop: 30,
+    marginLeft: 80,
+    marginBottom: 15,
+
+};
+
+const style_bar = {
+    fontSize: 40,
+    alignItems: 'center',
+    justifyContent: 'center',
+
+};
+
+const style_div = {
+    align: 'center',
 };
 
 class Login extends Component {
@@ -94,13 +108,19 @@ class Login extends Component {
 
 
     render() {
+
         return (
-            <div>
+            <div className="row center-align">
+
                 <MuiThemeProvider>
                     <div>
+
                         <AppBar
+
                             title="Login"
-                            iconElementLeft={<FontIcon className="muidocs-icon-action-home"/>}
+                            iconElementLeft={<i className="material-icons medium">lock</i>}
+                            titleStyle={style_bar}
+                            Style={style_div}
                         />
                         <TextField
                             hintText="Enter your Username"

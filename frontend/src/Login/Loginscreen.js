@@ -5,7 +5,8 @@ import Login from './Login';
 import Register from './Register';
 
 const style = {
-    margin: 15,
+    marginLeft: 80,
+    marginTop: 15,
 };
 
 
@@ -60,6 +61,7 @@ class Loginscreen extends Component {
        /* var loginscreen=[];
         loginscreen.push();*/
         var loginmessage = "Want to join?";
+
         this.setState({
             //loginscreen:loginscreen,
             loginmessage:loginmessage
@@ -89,17 +91,19 @@ class Loginscreen extends Component {
              */
         return (
             //<button onClick={this.a}>um botao do loginscreen</button>
-            <div className="loginscreen">
+            <div className="loginscreen" >
+            <div className="row center-align">
 
                 {mainModule}
                 <div>
-                    {this.state.loginmessage}
+
                     <MuiThemeProvider>
                         <div>
                             <RaisedButton label={this.state.buttonLabel} primary={true} style={style} onClick={(event) => this.handleClick(event)}/>
                         </div>
                     </MuiThemeProvider>
                 </div>
+            </div>
             </div>
         );
     }

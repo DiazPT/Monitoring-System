@@ -39,7 +39,7 @@ class Applogin extends Component {
 
         return (
             <div>
-                <button onClick={this.a}>um botao do app</button>
+
                 <LoginScreen />
             </div>
         );

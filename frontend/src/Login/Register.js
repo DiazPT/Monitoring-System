@@ -7,7 +7,15 @@ import axios from 'axios';
 import FontIcon from 'material-ui/FontIcon';
 
 const style = {
-    margin: 15,
+    marginTop: 30,
+    marginLeft: 80,
+    marginBottom: 15,
+
+};
+
+const style_bar = {
+    fontSize: 40,
+
 };
 
 class Register extends Component {
@@ -50,7 +58,8 @@ class Register extends Component {
                     <div>
                         <AppBar
                             title="Register"
-                            iconElementLeft={<FontIcon className="muidocs-icon-action-home"/>}
+                            titleStyle={style_bar}
+                            iconElementLeft={<i className=" fa fa-address-card-o fa-adjust fa-3x"></i>}
                         />
                         <TextField
                             hintText="Enter your Name"
