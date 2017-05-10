@@ -1,5 +1,6 @@
 var app = module.exports = require('express')();
 var models = require('../database/models.js');
+require('fetch-everywhere');
 require('./manager.js');
 
 console.log('[Device API] Ready.');
@@ -8,7 +9,23 @@ console.log('[Device API] Ready.');
 app.post('/api/device/add', function(req, res) {
   res.header("Access-Control-Allow-Origin", "*");
   console.log('[Device API] TO DO: Register a new device.');
-  res.send({message : 'TO DO: Register a new device.'});
+
+    fetch('http://localhost:8182/api/device/add', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: '_id=1234&current_state=on',
+    })
+        .then(response => response.json())
+        .then(json => {
+            this.setState({
+                //debug : this.state.debug + json.message + '\n'
+            });
+        }).catch(error => {
+        console.error(error);
+    });
+
 });
 
 /* Removes a device */

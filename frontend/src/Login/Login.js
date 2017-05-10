@@ -84,7 +84,6 @@ class Login extends Component {
 
 
                     alert("ola");
-                    socket.disconnect();
                     history.push('/user');
                     window.location = "/user";
                 }
@@ -92,6 +91,7 @@ class Login extends Component {
                     //history.push('/producer');
                     //window.location = "/producer";
                     this.state.token= json.token;
+                    
                     alert('producer');
                     history.push('/producer');
                 }

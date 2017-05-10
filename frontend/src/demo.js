@@ -28,7 +28,6 @@ class Demo extends React.Component {
 
 
     api_device_add() {
-        console.log("Ola");
         fetch('http://localhost:3000/api/device/add', {
             method: 'POST',
             headers: {

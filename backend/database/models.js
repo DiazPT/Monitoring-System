@@ -40,7 +40,8 @@ var User = mongoose.model('users', {
   password : String,
   username : String,
   email : String,
-  devices : [String]
+  devices : [String],
+  token: String
 });
 
 /* MongoDB Producers' model */
@@ -51,7 +52,8 @@ var Producer = mongoose.model('producers', {
   username : String,
   email : String,
   device_models : [String],
-  device_types : [String]
+  device_types : [String],
+  token : String
 });
 
 /* MongoDB Device's model */

@@ -8,6 +8,8 @@ const style = {
 
 };
 
+//var device_id = "_id":"1003452345","current_state":"on";
+
 class Menu extends Component {
 
 
@@ -18,7 +20,8 @@ class Menu extends Component {
         this.state = {
             //debug : 'IS Work 2 Front End - Demo Version\n'
             username:'',
-            password:''
+            password:'',
+            token: null,
         }
 
         this.api_device_add = this.api_device_add.bind(this);
@@ -35,8 +38,25 @@ class Menu extends Component {
         alert(data.toString());
     }
 
-    api_device_add(){
 
+
+    api_device_add(){
+        fetch('http://localhost:3000/api/device/add', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: 'token='+this.state.token
+
+        })
+            .then(response => response.json())
+            .then(json => {
+                this.setState({
+                    debug : this.state.debug + json.message + '\n'
+                });
+            }).catch(error => {
+            console.error(error);
+        });
 
     }
 
@@ -66,13 +86,15 @@ class Menu extends Component {
         }
         else{*/
             //alert(this.state.username);
+        this.state.token = localStorage.getItem('token');
+        if(this.state.token === null){
+            alert("Não está logado");
 
-        if(localStorage.getItem('token') === null){
-            alert("aquiiii");
             window.location="./";
         }
 
             return (
+
                 <MotionMenu
                     type="circle"
                     margin={200}
@@ -93,7 +115,6 @@ class Menu extends Component {
                     <div className="button" style={style} onClick={(event) => this.api_device_monitor()}><i className="fa fa-list-alt fa-2x" /></div>
 
                 </MotionMenu>
-
             );
         //}
 

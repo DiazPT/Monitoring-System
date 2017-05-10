@@ -59,6 +59,20 @@ app.post('/api/login', function(req, res) {
                     token: token,
                     message: 'Login ok'
                 })
+
+                recordmodel.User.findOne({username: req.body.username}, function(err, contact) {
+
+                        contact.token = token;
+                        contact.save(function(err) {
+                            if(!err) {
+                                console.log("contact " + contact.username + " created at " + contact.date_registered + " updated");
+                            }
+                            else {
+                                console.log("Error: could not save contact " + contact.username);
+                            }
+                        });
+
+                });
                 //res.send({message : 'Login user'});
             }
 
@@ -83,21 +97,22 @@ app.use(user);
 app.use(device);
 app.use(producer);
 
-/*app.listen(3000, function () {
+app.listen(3000, function () {
   console.log('[Monitoring API] Ready.');
-});*/
+});
+
 
 const http = require('http');
 const port = '3000'
 app.set('port', port);
 const server = http.createServer(app);
 
-
+/*
 const io = require('socket.io')(server); //creates the websocket
 //const io = require('socket.io')(server);
 	 // call the function in routes that awaits connections in the websocket.
 console.log();
 routes.connect(io);
 
-server.listen(port, () => console.log(`API running on localhost:${port}`));
+server.listen(port, () => console.log(`API running on localhost:${port}`));*/
 
