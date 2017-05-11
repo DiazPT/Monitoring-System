@@ -48,7 +48,7 @@ app.post('/api/user/register', function(req, res) {
                     email : req.body.email,
                     username: req.body.username,
                     password: req.body.password,
-                    date_registered:  moment().format('l'),
+                    date_registered:  moment().locale('pt').format('l')+ '    ' + moment().locale('pt').format('LT'),
                     token:token,
             });
 
@@ -62,6 +62,25 @@ app.post('/api/user/register', function(req, res) {
                         console.log("Created a new record!");
                         //recordCreated(newRecord);
                         res.send({message : 'Well register'});
+                    }
+
+                });
+                //moment.locale('pt'); //PT
+                var newActivity = new models.User_history({
+                    username : req.body.username,
+                    activity : 'Registered on the website',
+                    time : moment().locale('pt').format('l')+ '    ' + moment().locale('pt').format('LT'),
+                });
+
+                newActivity.save(function(err){
+                    if (err) {
+                        console.error("Error on saving activity");
+                        console.error(err); // log error to Terminal
+
+                    } else {
+                        console.log("History updated");
+                        //recordCreated(newRecord);
+
                     }
 
                 });

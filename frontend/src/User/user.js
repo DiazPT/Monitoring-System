@@ -5,6 +5,16 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import AppBar from 'material-ui/AppBar';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
+var DataGrid = require("react-datagrid");
+
+var data_history = [
+    { id: '1', firstName: 'John', lastName: 'Bobson'},
+    { id: '2', firstName: 'Bob', lastName: 'Mclaren'}
+];
+var columns_history = [
+    { name: 'firstName'},
+    { name: 'lastName'}
+];
 
 
 const style = {
@@ -38,7 +48,8 @@ class Menu extends Component {
             device_model: '',
             device_type: '',
             button_clicked_device_regist: '0',
-            button_clicked_device_remove: '0'
+            button_clicked_device_remove: '0',
+            button_clicked_history: '0'
         }
 
         this.api_device_add = this.api_device_add.bind(this);
@@ -50,8 +61,18 @@ class Menu extends Component {
 
 
     api_device_history() {
-        var data = new Date().getDay() + "-" + new Date().getMonth() + "-" + new Date().Year();
-        alert(data.toString());
+        if (this.state.button_clicked_history == '0') {
+            this.setState({
+                component: '3',
+                button_clicked_history: '1',
+            })
+        }
+        if (this.state.button_clicked_history == '1') {
+            this.setState({
+                component: '0',
+                button_clicked_history: '0',
+            })
+        }
     }
 
 
@@ -101,7 +122,7 @@ class Menu extends Component {
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded'
             },
-            body: 'username=' + this.state.username + '&token=' + this.state.token
+            body: 'username=' + this.state.username + '&token=' + this.state.token +'device_name=' + this.state.device_name
         })
             .then(response => response.json())
             .then(json => {
@@ -214,6 +235,26 @@ class Menu extends Component {
                     </div>
                 </MuiThemeProvider>
             </div>;
+        }
+        if(this.state.component === '3'){
+            mainModule =
+            <div>
+                <DataGrid idProperty="id" dataSource={data_history} columns={columns_history} />
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+            </div>;
+
         }
 
 

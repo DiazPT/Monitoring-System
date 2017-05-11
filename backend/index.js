@@ -7,6 +7,7 @@ var recordmodel = require('./database/models.js');
 var jwt = require('express-jwt');
 var config = require('./config');
 var jsonwebtoken  = require('jsonwebtoken');
+var moment = require('moment');
 const routes = require('./socket'); // file with module to deal with the routes for each http request
 
 /* CORS handling. */
@@ -27,8 +28,11 @@ app.post('/api/login', function(req, res) {
 
             if(User == null){
                 recordmodel.Producer.findOne({username:req.body.username, password:req.body.password}, function(err,Producer){
-                    if(Producer ==null)
+                    if(Producer ==null){
                         res.send({message : 'Username or Password wrong'});
+                        return;
+                    }
+
                     else
                         var token = jsonwebtoken.sign({
                             username: req.body.username,
@@ -58,6 +62,25 @@ app.post('/api/login', function(req, res) {
                     });
                     //res.send({message : 'Login user'});
                 });
+
+                var newActivity = new recordmodel.User_history({
+                    username : req.body.username,
+                    activity : 'Logged on the website',
+                    time : moment().locale('pt').format('l') + '    ' + moment().locale('pt').format('LT'),
+                });
+
+                newActivity.save(function(err){
+                    if (err) {
+                        console.error("Error on saving activity");
+                        console.error(err); // log error to Terminal
+
+                    } else {
+                        console.log("History updated");
+                        //recordCreated(newRecord);
+
+                    }
+
+                });
             }
 
             else{
@@ -85,6 +108,29 @@ app.post('/api/login', function(req, res) {
                                 console.log("Error: could not save contact " + contact.username);
                             }
                         });
+
+                });
+
+                //moment.locale('pt') // PT
+
+                console.log(moment().locale('pt').format('l') + '    ' + moment().locale('pt').format('LT'));
+
+                var newActivity = new recordmodel.User_history({
+                    username : req.body.username,
+                    activity : 'Logged on the website',
+                    time : moment().locale('pt').format('l')+ '    ' + moment().locale('pt').format('LT'),
+                });
+
+                newActivity.save(function(err){
+                    if (err) {
+                        console.error("Error on saving activity");
+                        console.error(err); // log error to Terminal
+
+                    } else {
+                        console.log("History updated");
+                        //recordCreated(newRecord);
+
+                    }
 
                 });
                 //res.send({message : 'Login user'});

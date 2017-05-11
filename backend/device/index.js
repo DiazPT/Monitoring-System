@@ -1,15 +1,10 @@
 var app = module.exports = require('express')();
 var models = require('../database/models.js');
+var moment = require('moment');
 require('fetch-everywhere');
 require('./manager.js');
 
 console.log('[Device API] Ready.');
-
-
-
-
-
-
 
 
 /* Registers a new device */
@@ -30,7 +25,7 @@ app.post('/api/device/add', function(req, res) {
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded'
                     },
-                    body: '_id=1234&current_state=on',
+                    body: '_id=' + req.body.device_name + '&current_state=on',
                 })
                     .then(response => response.json())
                     .then(json => {
@@ -44,6 +39,27 @@ app.post('/api/device/add', function(req, res) {
                             res.json({
                                 message: 'device added'
                             })
+
+                            //moment.locale('pt');
+
+                            var newActivity = new models.User_history({
+                                username : req.body.username,
+                                activity : 'Added the device: ' + req.body.device_name,
+                                time : moment().locale('pt').format('l')+ '    ' + moment().locale('pt').format('LT'),
+                            });
+
+                            newActivity.save(function(err){
+                                if (err) {
+                                    console.error("Error on saving activity");
+                                    console.error(err); // log error to Terminal
+
+                                } else {
+                                    console.log("History updated");
+                                    //recordCreated(newRecord);
+
+                                }
+
+                            });
                         }
                         else{
                             res.json({

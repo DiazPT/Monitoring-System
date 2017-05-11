@@ -72,9 +72,16 @@ var Device = mongoose.model('devices', {
 
 /* MongoDB Reading's model */
 var Reading = mongoose.model('readings', {
-  value : String,
-  type : String,
-  timestamp : String
+    value : String,
+    type : String,
+    timestamp : String
+});
+
+/* MongoDB Reading's model */
+var User_history = mongoose.model('user_history', {
+    username : String,
+    activity : String,
+    time : String
 });
 
 module.exports.State = State;
@@ -86,4 +93,5 @@ module.exports.User = User;
 module.exports.Producer = Producer;
 module.exports.Device = Device;
 module.exports.Reading = Reading;
+module.exports.User_history = User_history;
 module.exports.mongoose = mongoose;
