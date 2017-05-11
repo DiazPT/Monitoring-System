@@ -42,6 +42,20 @@ app.post('/api/login', function(req, res) {
                         io:io,
                         message: 'Login producer'
                     })
+
+                    recordmodel.User.findOne({username: req.body.username}, function(err, contact) {
+
+                        contact.token = token;
+                        contact.save(function(err) {
+                            if(!err) {
+                                console.log("contact " + contact.username + " created at " + contact.date_registered + " updated");
+                            }
+                            else {
+                                console.log("Error: could not save contact " + contact.username);
+                            }
+                        });
+
+                    });
                     //res.send({message : 'Login user'});
                 });
             }

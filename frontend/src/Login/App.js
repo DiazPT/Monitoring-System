@@ -31,6 +31,7 @@ class Applogin extends Component {
         this.props.history.push('/user');
     }
     render() {
+        localStorage.clear();
         /*{this.state.loginPage}
          {this.state.uploadScreen}*/
 

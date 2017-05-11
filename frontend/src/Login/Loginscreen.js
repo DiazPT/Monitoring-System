@@ -5,7 +5,6 @@ import Login from './Login';
 import Register from './Register';
 
 const style = {
-    marginLeft: 80,
     marginTop: 15,
 };
 

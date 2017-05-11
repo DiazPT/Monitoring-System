@@ -3,6 +3,25 @@ var models = require('../database/models.js');
 
 console.log('[Producer API] Ready.');
 
+
+function token_true(name, token_received) {
+
+    models.User.findOne({username: name, token: token_received}, function (err, User) {
+
+        if (User == Null) {
+            return true;
+        }
+        else
+            return false;
+
+    });
+};
+
+
+
+
+
+
 /* Registers a new producer */
 app.post('/api/producer/register', function(req, res) {
   res.header("Access-Control-Allow-Origin", "*");

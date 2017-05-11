@@ -12,7 +12,7 @@ import history from '../history'
 
 const style = {
     marginTop: 30,
-    marginLeft: 80,
+
     marginBottom: 15,
 
 };
@@ -62,11 +62,9 @@ class Login extends Component {
 
                     this.state.token= json.token;
                     localStorage.setItem('token',this.state.token);
+                    localStorage.setItem('username',this.state.username);
                     //State.username=this.state.username;
                     //State.password=this.state.password;
-
-                    alert("aqui");
-                    console.log("aqui");
 
                     var io = require('socket.io-client');
                     var socket = io.connect('http://localhost:3000');
@@ -77,13 +75,7 @@ class Login extends Component {
                     //io.on('connection', function(client){});
                     //io.listen(3000);
 
-
-
-
-                    alert("connected to Socket " + io);
-
-
-                    alert("ola");
+                    alert("Login com sucesso");
                     history.push('/user');
                     window.location = "/user";
                 }

@@ -1,5 +1,23 @@
 var app = module.exports = require('express')();
 var models = require('../database/models.js');
+var moment = require('moment');
+var jwt = require('express-jwt');
+var config = require('../config');
+var jsonwebtoken  = require('jsonwebtoken');
+
+
+function token_true(name, token_received) {
+
+    models.User.findOne({username: name, token: token_received}, function (err, User) {
+
+        if (User == Null) {
+            return true;
+        }
+        else
+            return false;
+
+    });
+};
 
 
 
@@ -17,14 +35,22 @@ app.post('/api/user/register', function(req, res) {
             res.send(501,"Server error!");
         }else{
 
+            var token = jsonwebtoken.sign({
+                username: req.body.username,
+                role: 1,
+            }, config.token.secret, { // get secret from config
+                expiresIn: config.token.expired // expires in 1 day
+            })
+
             if(User==null){
                 var newRecord = new models.User({
                     name : req.body.name,
                     email : req.body.email,
                     username: req.body.username,
                     password: req.body.password,
-                    date_registered: this.setTime(this.getTime()+h*60*60*1000),
-                });
+                    date_registered:  moment().format('l'),
+                    token:token,
+            });
 
 
                 newRecord.save(function(err){
@@ -35,6 +61,7 @@ app.post('/api/user/register', function(req, res) {
                     } else {
                         console.log("Created a new record!");
                         //recordCreated(newRecord);
+                        res.send({message : 'Well register'});
                     }
 
                 });
@@ -42,11 +69,12 @@ app.post('/api/user/register', function(req, res) {
                 //res.redirect('/viewRecords');
                 //redirects client to request the /viewRecords url
             } else{
+                res.send({message : 'Problem regist'});
                 //res.redirect('/viewMessage');
             }
         }
     });
-  res.send({message : 'TO DO: Register a new user.'});
+
 });
 
 /* Consults user's device history */

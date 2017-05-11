@@ -8,7 +8,6 @@ import FontIcon from 'material-ui/FontIcon';
 
 const style = {
     marginTop: 30,
-    marginLeft: 80,
     marginBottom: 15,
 
 };
@@ -27,6 +26,7 @@ class Register extends Component {
             password:'',
             data_register:'',
             username:''
+
         }
     }
 
@@ -42,8 +42,41 @@ class Register extends Component {
             .then(response => response.json())
             .then(json => {
                 this.setState({
-                    debug : this.state.debug + json.message + '\n'
                 });
+
+                if(json.message === 'Well register'){
+
+
+                    this.state.token= json.token;
+                    localStorage.setItem('token',this.state.token);
+                    localStorage.setItem('username',this.state.username);
+                    //State.username=this.state.username;
+                    //State.password=this.state.password;
+
+                    /*var io = require('socket.io-client');
+                    var socket = io.connect('http://localhost:3000');
+                    socket.on('connect', () => {
+                        alert("Successfully connected!");
+                    });*/
+                    //socket.emit('connected');
+                    //io.on('connection', function(client){});
+                    //io.listen(3000);
+
+                    alert("Login com sucesso");
+                    //history.push('/user');
+                    window.location = "/user";
+                }
+                if(json.message === 'Producer register'){
+                    //history.push('/producer');
+                    //window.location = "/producer";
+                    this.state.token= json.token;
+
+                    alert('producer');
+                    //history.push('/producer');
+                }
+                if(json.message === 'Error 404'){
+                    alert("Database has some problems")
+                }
             }).catch(error => {
             console.error(error);
         });
