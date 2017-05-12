@@ -60,9 +60,11 @@ class Login extends Component {
                 });
                 if(json.message === 'Login ok'){
 
+
                     this.state.token= json.token;
                     localStorage.setItem('token',this.state.token);
                     localStorage.setItem('username',this.state.username);
+                    localStorage.setItem('producers',json.producers);
                     //State.username=this.state.username;
                     //State.password=this.state.password;
 
@@ -74,6 +76,25 @@ class Login extends Component {
                     //socket.emit('connected');
                     //io.on('connection', function(client){});
                     //io.listen(3000);
+
+                    fetch('http://localhost:3000/api/device/initial', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded'
+                        },
+                        body: 'username=' + this.state.username + '&token=' + this.state.token
+                    })
+                        .then(response => response.json())
+                        .then(json => {
+                            if (json.message === 'device added') {
+                                alert("device added");
+                            }
+                            else {
+                                alert("device not added");
+                            }
+                        }).catch(error => {
+                        console.error(error);
+                    });
 
                     alert("Login com sucesso");
                     history.push('/user');

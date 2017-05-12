@@ -3,8 +3,8 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import AppBar from 'material-ui/AppBar';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
-import axios from 'axios';
-import FontIcon from 'material-ui/FontIcon';
+import ValuesAsBooleansField from './combobox';
+
 
 const style = {
     marginTop: 30,
@@ -25,62 +25,86 @@ class Register extends Component {
             email:'',
             password:'',
             data_register:'',
-            username:''
-
+            username:'',
+            api:''
         }
     }
 
-    handleClick(event){
+    handleClick(event) {
 
-        fetch('http://localhost:3000/api/user/register', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
-            },
-            body: 'username='+this.state.username+'&name=' + this.state.name+ '&email=' + this.state.email+'&password=' + this.state.password
-        })
-            .then(response => response.json())
-            .then(json => {
-                this.setState({
+
+        if (this.state.username === '' || this.state.password === '' || this.state.email === '' || this.state.name === '') {
+            alert("Fill the blank fields");
+        }
+        else {
+            if (localStorage.getItem('combobox') === null) {
+                alert("Select if you are a producer or a user");
+            }
+            else {
+
+
+                if (localStorage.getItem('combobox') === 'user')
+                    this.state.api = 'http://localhost:3000/api/user/register'; //USER
+                else
+                    this.state.api = 'http://localhost:3000/api/producer/register';  //PRODUCER
+
+
+                fetch(this.state.api, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    body: 'username=' + this.state.username + '&name=' + this.state.name + '&email=' + this.state.email + '&password=' + this.state.password
+                })
+                    .then(response => response.json())
+                    .then(json => {
+                        this.setState({});
+                        if (json.message === 'Well register') {
+
+
+                            this.state.token = json.token;
+                            localStorage.setItem('token', this.state.token);
+                            localStorage.setItem('username', this.state.username);
+                            //State.username=this.state.username;
+                            //State.password=this.state.password;
+
+                            /*var io = require('socket.io-client');
+                             var socket = io.connect('http://localhost:3000');
+                             socket.on('connect', () => {
+                             alert("Successfully connected!");
+                             });*/
+                            //socket.emit('connected');
+                            //io.on('connection', function(client){});
+                            //io.listen(3000);
+
+                            alert("Registered with success");
+                            //history.push('/user');
+                            window.location = "/user";
+                        }
+                        if (json.message === 'Producer register') {
+                            //history.push('/producer');
+                            //window.location = "/producer";
+                            this.state.token = json.token;
+                            localStorage.setItem('token', this.state.token);
+                            localStorage.setItem('username', this.state.username);
+                            alert("Registered with success");
+                            window.location = "/producer";
+                            //history.push('/producer');
+                        }
+                        if (json.message === 'Error 404') {
+                            alert("Database has some problems")
+                        }
+                        if (json.message === 'Problem regist') {
+                            alert("Username already taken")
+                        }
+                    }).catch(error => {
+                    console.error(error);
                 });
 
-                if(json.message === 'Well register'){
+            }
 
 
-                    this.state.token= json.token;
-                    localStorage.setItem('token',this.state.token);
-                    localStorage.setItem('username',this.state.username);
-                    //State.username=this.state.username;
-                    //State.password=this.state.password;
-
-                    /*var io = require('socket.io-client');
-                    var socket = io.connect('http://localhost:3000');
-                    socket.on('connect', () => {
-                        alert("Successfully connected!");
-                    });*/
-                    //socket.emit('connected');
-                    //io.on('connection', function(client){});
-                    //io.listen(3000);
-
-                    alert("Login com sucesso");
-                    //history.push('/user');
-                    window.location = "/user";
-                }
-                if(json.message === 'Producer register'){
-                    //history.push('/producer');
-                    //window.location = "/producer";
-                    this.state.token= json.token;
-
-                    alert('producer');
-                    //history.push('/producer');
-                }
-                if(json.message === 'Error 404'){
-                    alert("Database has some problems")
-                }
-            }).catch(error => {
-            console.error(error);
-        });
-
+        }
     }
 
 
@@ -94,6 +118,7 @@ class Register extends Component {
                             titleStyle={style_bar}
                             iconElementLeft={<i className=" fa fa-address-card-o fa-adjust fa-3x"></i>}
                         />
+                        <ValuesAsBooleansField/>
                         <TextField
                             hintText="Enter your Name"
                             floatingLabelText="Name"

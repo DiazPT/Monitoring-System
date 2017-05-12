@@ -5,7 +5,8 @@ import Demo from './demo.js';
 import Applogin from './Login/App.js';
 import Menu from './User/user.js';
 import MenuProducer from './Producer/Producer.js';
-import  MySideNav from './sidebar.js';
+import combobox_state from './User/combobox_state.js';
+
 
 
 
@@ -16,7 +17,7 @@ const Main = () => (
             <Route path="/demo" component={Demo}/>
             <Route path="/user" component={Menu}/>
             <Route path="/producer" component={MenuProducer}/>
-            <Route path="/sidebar" component={MySideNav}/>
+            <Route path="/combobox" component={combobox_state}/>
         </div>
     </BrowserRouter>
 )

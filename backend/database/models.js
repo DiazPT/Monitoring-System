@@ -53,6 +53,7 @@ var Producer = mongoose.model('producers', {
   email : String,
   device_models : [String],
   device_types : [String],
+  devices: [String],
   token : String
 });
 

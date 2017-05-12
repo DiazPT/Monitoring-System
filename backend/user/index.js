@@ -57,6 +57,7 @@ app.post('/api/user/register', function(req, res) {
                     if (err) {
                         console.error("Error on saving new record");
                         console.error(err); // log error to Terminal
+                        res.send({message : 'Error 404'});
 
                     } else {
                         console.log("Created a new record!");

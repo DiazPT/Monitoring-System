@@ -30,10 +30,10 @@ app.post('/api/login', function(req, res) {
                 recordmodel.Producer.findOne({username:req.body.username, password:req.body.password}, function(err,Producer){
                     if(Producer ==null){
                         res.send({message : 'Username or Password wrong'});
-                        return;
+
                     }
 
-                    else
+                    else{
                         var token = jsonwebtoken.sign({
                             username: req.body.username,
                             role: 2,
@@ -41,46 +41,50 @@ app.post('/api/login', function(req, res) {
                             expiresIn: config.token.expired // expires in 1 day
                         })
 
-                    res.json({
-                        token: token,
-                        io:io,
-                        message: 'Login producer'
-                    })
+                        res.json({
+                            token: token,
+                            io:io,
+                            message: 'Login producer'
+                        })
 
-                    recordmodel.User.findOne({username: req.body.username}, function(err, contact) {
+                        recordmodel.User.findOne({username: req.body.username}, function(err, contact) {
 
-                        contact.token = token;
-                        contact.save(function(err) {
-                            if(!err) {
-                                console.log("contact " + contact.username + " created at " + contact.date_registered + " updated");
-                            }
-                            else {
-                                console.log("Error: could not save contact " + contact.username);
-                            }
+                            contact.token = token;
+                            contact.save(function(err) {
+                                if(!err) {
+                                    console.log("contact " + contact.username + " created at " + contact.date_registered + " updated");
+                                }
+                                else {
+                                    console.log("Error: could not save contact " + contact.username);
+                                }
+                            });
+
                         });
 
-                    });
+                        var newActivity = new recordmodel.User_history({
+                            username : req.body.username,
+                            activity : 'Logged on the website',
+                            time : moment().locale('pt').format('l') + '    ' + moment().locale('pt').format('LT'),
+                        });
+
+                        newActivity.save(function(err){
+                            if (err) {
+                                console.error("Error on saving activity");
+                                console.error(err); // log error to Terminal
+
+                            } else {
+                                console.log("History updated");
+                                //recordCreated(newRecord);
+
+                            }
+
+                        });
+                    }
+
                     //res.send({message : 'Login user'});
                 });
 
-                var newActivity = new recordmodel.User_history({
-                    username : req.body.username,
-                    activity : 'Logged on the website',
-                    time : moment().locale('pt').format('l') + '    ' + moment().locale('pt').format('LT'),
-                });
 
-                newActivity.save(function(err){
-                    if (err) {
-                        console.error("Error on saving activity");
-                        console.error(err); // log error to Terminal
-
-                    } else {
-                        console.log("History updated");
-                        //recordCreated(newRecord);
-
-                    }
-
-                });
             }
 
             else{
@@ -92,10 +96,33 @@ app.post('/api/login', function(req, res) {
                     expiresIn: config.token.expired // expires in 1 day
                 })
 
-                res.json({
-                    token: token,
-                    message: 'Login ok'
-                })
+                recordmodel.Producer.distinct('name', function(err, all_producers){
+
+                    if (err) {
+                        console.error(err);
+                        res.send({message : 'Error 404'})}
+
+                    if(all_producers == 'null'){
+                        console.log(all_producers);
+                        console.log('Producer=' + all_producers.name);
+                    }
+
+                    console.log(all_producers);
+                    console.log('Producer=' + all_producers.name);
+
+                    res.json({
+                        token: token,
+                        message: 'Login ok',
+                        producers: all_producers
+                    })
+
+                });
+
+
+
+
+
+
 
                 recordmodel.User.findOne({username: req.body.username}, function(err, contact) {
 

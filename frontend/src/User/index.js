@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import MenuItem from './item';
 import MenuButton from './button';
 
+
 export default class MotionMenu extends Component {
 
   static propTypes = {
