@@ -20,7 +20,7 @@ var Combobox_state = React.createClass({
     onChange(value) {
         this.setState({ value });
         console.log('Boolean Select value changed to', value);
-        localStorage.setItem('combobox',value)
+        localStorage.setItem('combobox_state',value)
     },
     render () {
 

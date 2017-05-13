@@ -101,9 +101,36 @@ app.post('/api/producer/register', function(req, res) {
 
 /* Adds a new product model */
 app.post('/api/producer/productmodel/add', function(req, res) {
-  res.header("Access-Control-Allow-Origin", "*");
-  console.log('[Producer API] TO DO: Add a new product model.');
-  res.send({message : 'TO DO: Add a new product model.'});
+    res.header("Access-Control-Allow-Origin", "*");
+    console.log('[Producer API] TO DO: Add a new product model.')
+
+    models.ProductModel.findOne({name:req.body.name_model, token:req.body.token},function(err,ProductModel)
+    {
+
+        if (err) {
+            console.error("Server error creating user!");
+            res.send(501, "Server error!");
+        } else {
+            if (ProductModel == null) {
+                var newRecord = new models.ProductModel({
+                    name: req.body.name_model,
+                    token: req.body.token
+                });
+                newRecord.save(function (err) {
+                    if (err) {
+                        console.error("Error on saving new record");
+                        console.error(err); // log error to Terminal
+                        res.send({message: 'Error 404'});
+
+                    } else {
+                        console.log("Created a new record!");
+                        //recordCreated(newRecord);
+                        res.send({message: 'Creating model'});
+                    }
+                });
+            }
+        }
+    });
 });
 
 /* Removes a product model */

@@ -7,14 +7,14 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import AppBar from 'material-ui/AppBar';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
-var DataGrid = require('react-datagrid');
+const ReactDataGrid = require('react-data-grid');
 var css = require('react-datagrid/index.css');
 
 
 var columns = [
-    {name: 'id', title: '#', width: 50},
-    {name: 'activity', width: 400},
-    {name: 'device', width: 200},
+    {key: 'id', name: 'id', width: 50},
+    {key: 'activity', name:'activity', width: 400},
+    {key: 'device', name: 'device', width: 200},
 ];
 
 const style = {
@@ -33,7 +33,8 @@ const style_div = {
     marginLeft: 80,
 }
 
-var rows = [];
+let rows = [];
+var number_rows = 0;
 
 //var device_id = "_id":"1003452345","current_state":"on";
 
@@ -59,9 +60,10 @@ class Menu extends Component {
             button_clicked_device_state: '0',
             first_time: 1,
             value: '',
+            combobox_state: '',
         }
 
-
+        this.rowGetter = this.rowGetter.bind(this);
         this.api_device_add = this.api_device_add.bind(this);
         this.api_device_remove = this.api_device_remove.bind(this);
         this.api_device_history = this.api_device_history.bind(this);
@@ -71,35 +73,55 @@ class Menu extends Component {
         this.onChangecombobox = this.onChangecombobox.bind(this);
     }
 
+    rowGetter(i) {
+        return rows[i];
+    }
+
     api_init() {
 
-        if(this.state.first_time == 1){
-            fetch('http://localhost:3000/api/device/all/', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded'
-                },
-                body: 'username=' + this.state.username + '&token=' + this.state.token
-            })
-                .then(response => response.json())
-                .then(json => {
-                    if (json.message === 'ok') {
-                        device_combobox = json.devices_all;
-                    }
-                    else {
-                        alert("devices not found");
+        fetch('http://localhost:3000/api/device/all/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: 'username=' + this.state.username + '&token=' + this.state.token
+        })
+            .then(response => response.json())
+            .then(json => {
+                if (json.message === 'ok') {
+                    device_combobox = json.devices_all;
+                }
+                else {
+                    alert("devices not found");
 
-                    }
-                }).catch(error => {
-                console.error(error);
-            });
+                }
+            }).catch(error => {
+            console.error(error);
+        });
 
-            this.state.first_time = 0;
-        }
+        fetch('http://localhost:3000/api/device/history', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: 'username=' + this.state.username + '&token=' + this.state.token
+        })
+            .then(response => response.json())
+            .then(json => {
+                if (json.message === 'ok') {
+                    rows = json.rows;
+                    number_rows = json.number_rows;
+                }
+                else if (json.message === 'Devices empty') {
+                    alert("List of devices empty");
+                }
+                else {
+                    alert("devices not added");
 
-
-
-
+                }
+            }).catch(error => {
+            console.error(error);
+        });
     }
 
     onChangecombobox(value) {
@@ -123,7 +145,7 @@ class Menu extends Component {
                     if (json.message === 'ok') {
                         rows = json.rows;
                     }
-                    if (json.message === 'Devices empty') {
+                    else if (json.message === 'Devices empty') {
                         alert("List of devices empty");
                     }
                     else {
@@ -134,12 +156,15 @@ class Menu extends Component {
                 console.error(error);
             });
 
+
             this.setState({
                 component: '3',
                 button_clicked_history: '1',
             })
         }
         if (this.state.button_clicked_history == '1') {
+
+
             this.setState({
                 component: '0',
                 button_clicked_history: '0',
@@ -204,6 +229,28 @@ class Menu extends Component {
 
     api_device_state() {
         if (this.state.button_clicked_device_state == '0') {
+
+            fetch('http://localhost:3000/api/device/all/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: 'username=' + this.state.username + '&token=' + this.state.token
+            })
+                .then(response => response.json())
+                .then(json => {
+                    if (json.message === 'ok') {
+                        device_combobox = json.devices_all;
+                    }
+                    else {
+                        alert("devices not found");
+
+                    }
+                }).catch(error => {
+                console.error(error);
+            });
+
+
             this.setState({
                 component: '4',
                 button_clicked_device_state: '1',
@@ -280,6 +327,37 @@ class Menu extends Component {
             }).catch(error => {
             console.error(error);
         });
+    }
+
+    handleClickState() {
+        this.state.combobox_state = localStorage.getItem('combobox_state');
+        if (this.state.combobox_state === '' || this.state.value === '') {
+            alert("Fill the blanked fields");
+        }
+        else {
+            fetch('http://localhost:3000/api/device/state/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: 'username=' + this.state.username + '&token=' + this.state.token + '&device=' + this.state.value + '&current_state=' + this.state.combobox_state
+            })
+                .then(response => response.json())
+                .then(json => {
+                    if (json.message === 'Device changed') {
+                        alert("Changed state");
+                    }
+                    else if (json.message === 'Device problem') {
+                        alert("Device has a problem");
+
+                    }
+                    else {
+                        alert("Device not found");
+                    }
+                }).catch(error => {
+                console.error(error);
+            });
+        }
     }
 
 
@@ -387,47 +465,82 @@ class Menu extends Component {
         if (this.state.component === '3') {
             mainModule =
                 <div>
-                    <DataGrid
-                        idProperty='id'
-                        dataSource={rows}
+                    <MuiThemeProvider>
+                        <div>
+                            <AppBar
+                                title="Device history"
+                                iconElementLeft={<i className=" fa fa-address-card-o fa-adjust fa-3x"></i>}
+                            />
+                    <ReactDataGrid
+
                         columns={columns}
+                        rowsCount={number_rows}
+                        minHeight={200}
+                        rowGetter={this.rowGetter}
 
                         //if you don't want to show a column menu to show/hide columns, use
                         //withColumnMenu={false}
                     />
-                    <br/>
-                    <br/>
-                    <br/>
-                    <br/>
-                    <br/>
-                    <br/>
-                    <br/>
-                    <br/>
-                    <br/>
-                    <br/>
-                    <br/>
-                    <br/>
-                    <br/>
+                            <br/>
+                            <br/>
+                            <br/>
+                            <br/>
+                            <br/>
+                            <br/>
+                            <br/>
+                            <br/>
+                            <br/>
+                            <br/>
+                            <br/>
+                            <br/>
+                            <br/>
+                        </div>
+                    </MuiThemeProvider>
                 </div>;
 
         }
         if (this.state.component === '4') {
             mainModule =
                 <div>
-                    <Combobox_state/>
-                    <br/>
-                    <br/>
-                    <br/>
-                    <br/>
-                    <br/>
-                    <br/>
-                    <br/>
-                    <br/>
-                    <br/>
-                    <br/>
-                    <br/>
-                    <br/>
-                    <br/>
+                    <MuiThemeProvider>
+                        <div>
+                            <AppBar
+                                title="Change State"
+                                iconElementLeft={<i className=" fa fa-address-card-o fa-adjust fa-3x"></i>}
+                            />
+                            <div className="section">
+                                <h3 className="section-heading">{this.props.label}</h3>
+                                <Select
+                                    onChange={this.onChangecombobox}
+                                    options={device_combobox}
+                                    simpleValue
+                                    value={this.state.value}
+                                    clearable="false"
+                                />
+                            </div>
+                            <br/>
+                            <Combobox_state/>
+                            <br/>
+                            <br/>
+                            <br/>
+                            <br/>
+                            <RaisedButton label="Submit" primary={true} style={submit_style}
+                                          onClick={(event) => this.handleClickState()}/>
+                            <br/>
+                            <br/>
+                            <br/>
+                            <br/>
+                            <br/>
+                            <br/>
+                            <br/>
+                            <br/>
+                            <br/>
+                            <br/>
+                            <br/>
+                            <br/>
+                            <br/>
+                        </div>
+                    </MuiThemeProvider>
                 </div>;
         }
 
@@ -461,7 +574,7 @@ class Menu extends Component {
                         onClose={() => console.log('onClose')}
                     >
 
-                        <div className="button"><i className="fa fa-bars fa-2x" onClick={(event) => this.api_init()}/>
+                        <div className="button" onClick={(event) => this.api_init()}><i className="fa fa-bars fa-2x" />
                         </div>
                         <div className="button" style={style} onClick={(event) => this.api_device_add()}><i
                             className="fa fa-plus fa-2x"/></div>
