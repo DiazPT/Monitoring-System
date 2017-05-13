@@ -11,11 +11,19 @@ const ReactDataGrid = require('react-data-grid');
 var css = require('react-datagrid/index.css');
 
 
-var columns = [
+var columns_grid = [
     {key: 'id', name: 'id', width: 50},
     {key: 'activity', name:'activity', width: 400},
     {key: 'device', name: 'device', width: 200},
 ];
+
+
+var columns_grid_values = [
+    { key: 'id', name: 'ID' },
+    { key: 'value', name: 'Value' },
+    { key: 'type', name: 'Type' },
+    { key: 'timestamp', name: 'Time' },
+    { key: 'device', name: 'Device' }];
 
 const style = {
     backgroundColor: '#01A9DB',
@@ -34,6 +42,7 @@ const style_div = {
 }
 
 let rows = [];
+let rows_values = [];
 var number_rows = 0;
 
 //var device_id = "_id":"1003452345","current_state":"on";
@@ -57,12 +66,15 @@ class Menu extends Component {
             button_clicked_device_regist: '0',
             button_clicked_device_remove: '0',
             button_clicked_history: '0',
+            button_clicked_monitor: '0',
             button_clicked_device_state: '0',
-            first_time: 1,
+            first_time: '1',
             value: '',
             combobox_state: '',
         }
 
+
+        this.rowGetter_values = this.rowGetter_values.bind(this);
         this.rowGetter = this.rowGetter.bind(this);
         this.api_device_add = this.api_device_add.bind(this);
         this.api_device_remove = this.api_device_remove.bind(this);
@@ -75,6 +87,10 @@ class Menu extends Component {
 
     rowGetter(i) {
         return rows[i];
+    }
+
+    rowGetter_values(i){
+        return rows_values[i];
     }
 
     api_init() {
@@ -110,7 +126,9 @@ class Menu extends Component {
             .then(json => {
                 if (json.message === 'ok') {
                     rows = json.rows;
+
                     number_rows = json.number_rows;
+
                 }
                 else if (json.message === 'Devices empty') {
                     alert("List of devices empty");
@@ -143,6 +161,7 @@ class Menu extends Component {
                 .then(response => response.json())
                 .then(json => {
                     if (json.message === 'ok') {
+
                         rows = json.rows;
                     }
                     else if (json.message === 'Devices empty') {
@@ -156,11 +175,11 @@ class Menu extends Component {
                 console.error(error);
             });
 
-
             this.setState({
                 component: '3',
                 button_clicked_history: '1',
             })
+
         }
         if (this.state.button_clicked_history == '1') {
 
@@ -266,7 +285,47 @@ class Menu extends Component {
     }
 
     api_device_monitor() {
+        if (this.state.button_clicked_monitor == '0') {
 
+            fetch('http://localhost:3000/api/device/value_history', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: 'username=' + this.state.username + '&token=' + this.state.token
+            })
+                .then(response => response.json())
+                .then(json => {
+                    if (json.message === 'ok') {
+
+                        rows_values = json.rows;
+                        alert(rows_values);
+                    }
+                    else if (json.message === 'Devices empty') {
+                        alert("List of devices empty");
+                    }
+                    else {
+                        alert("devices not added");
+
+                    }
+                }).catch(error => {
+                console.error(error);
+            });
+
+            this.setState({
+                component: '5',
+                button_clicked_monitor: '1',
+            })
+
+        }
+        if (this.state.button_clicked_monitor == '1') {
+
+
+            this.setState({
+                component: '0',
+                button_clicked_monitor: '0',
+            })
+        }
     }
 
     handleClickRegisterDevice() {
@@ -465,22 +524,26 @@ class Menu extends Component {
         if (this.state.component === '3') {
             mainModule =
                 <div>
-                    <MuiThemeProvider>
-                        <div>
-                            <AppBar
-                                title="Device history"
-                                iconElementLeft={<i className=" fa fa-address-card-o fa-adjust fa-3x"></i>}
-                            />
-                    <ReactDataGrid
+                    <MuiThemeProvider >
+                        <div >
+                            <div className="activity">
+                                <AppBar
+                                    title="Device history"
+                                    iconElementLeft={<i className=" fa fa-address-card-o fa-adjust fa-3x"></i>}
 
-                        columns={columns}
-                        rowsCount={number_rows}
-                        minHeight={200}
-                        rowGetter={this.rowGetter}
+                                />
+                                <ReactDataGrid
 
-                        //if you don't want to show a column menu to show/hide columns, use
-                        //withColumnMenu={false}
-                    />
+                                    columns={columns_grid}
+                                    rowsCount={50}
+                                    minHeight={200}
+                                    rowGetter={this.rowGetter}
+
+                                    //if you don't want to show a column menu to show/hide columns, use
+                                    //withColumnMenu={false}
+                                />
+                            </div>
+
                             <br/>
                             <br/>
                             <br/>
@@ -495,7 +558,7 @@ class Menu extends Component {
                             <br/>
                             <br/>
                         </div>
-                    </MuiThemeProvider>
+                    </MuiThemeProvider >
                 </div>;
 
         }
@@ -543,11 +606,51 @@ class Menu extends Component {
                     </MuiThemeProvider>
                 </div>;
         }
+        if (this.state.component === '5') {
+            mainModule =
+                <div>
+                    <MuiThemeProvider >
+                        <div>
+                            <div className="activity">
+                                <AppBar
+                                    title="Device monitor"
+                                    iconElementLeft={<i className=" fa fa-address-card-o fa-adjust fa-3x"></i>}
+
+                                />
+                                <ReactDataGrid
+
+                                    columns={columns_grid_values}
+                                    rowsCount={500}
+                                    minHeight={200}
+                                    rowGetter={this.rowGetter_values}
+
+                                    //if you don't want to show a column menu to show/hide columns, use
+                                    //withColumnMenu={false}
+                                />
+                            </div>
+                            <br/>
+                            <br/>
+                            <br/>
+                            <br/>
+                            <br/>
+                            <br/>
+                            <br/>
+                            <br/>
+                            <br/>
+                            <br/>
+                            <br/>
+                            <br/>
+                            <br/>
+                        </div>
+                    </MuiThemeProvider >
+                </div>;
+
+        }
 
         this.state.token = localStorage.getItem('token');
         this.state.username = localStorage.getItem('username');
         this.state.producers = localStorage.getItem('producers');
-
+        this.api_init();
 
         if (this.state.token == null) {
             alert("Não tem sessão iniciada");

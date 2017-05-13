@@ -3,6 +3,7 @@ var models = require('../database/models.js');
 var moment = require('moment');
 require('fetch-everywhere');
 require('./manager.js');
+var async = require('async');
 
 console.log('[Device API] Ready.');
 
@@ -183,6 +184,7 @@ app.post('/api/device/remove', function (req, res) {
         else {
             models.Device.findOne({name: req.body.device}, function (err, device_to_remove) {
                 var producer_removing = device_to_remove.producer;
+
                 models.Device.remove({name: req.body.device}, function (err, removed) {
                     console.log(removed + ' device removed.');
                     User.devices.pull(req.body.device);
@@ -226,6 +228,7 @@ app.post('/api/device/all', function (req, res) {
     });
 });
 
+
 /* Consults history of a given device */
 app.post('/api/device/history', function (req, res) {
     res.header("Access-Control-Allow-Origin", "*");
@@ -246,46 +249,129 @@ app.post('/api/device/history', function (req, res) {
         else {
 
 
-            for (i = 0; i < User.devices.length; i++) {
+            //for (i = 0; i < User.devices.length; i++) {
 
-                console.log(i);
 
-                number_devices = User.devices.length;
+            async.forEach(User.devices, function (Device_user, callback1) {
 
-                models.Device.findOne({name: User.devices[i]}, function (err, Device_added) {
 
-                    for (n = 0; n < Device_added.usage_history.length; n++) {
+                //console.log(i);
+
+                console.log(Device_user);
+
+                models.Device.findOne({name: Device_user}, function (err, Device_added) {
+
+
+                    async.forEach(Device_added.usage_history, function (history, callback2) {
                         p++;
-                        console.log(p);
                         all_devices.push({
                             id: p,
-                            activity: Device_added.usage_history[n],
+                            activity: history,
                             device: Device_added.name,
                         });
-                    }
-                    console.log(all_devices);
-                    if (number_devices === 0) {
-                        console.log("nao da");
-                        res.json({
-                            message: 'Devices empty'
-                        })
-                    }
-                    else if(sent === 0){
-                        sent++;
 
-                        p++;
-                        console.log(p);
-                        res.json({
-                            message: 'ok',
-                            rows: all_devices,
-                            number_rows: p,
-                        })
-                    }
+                    });
+
+
                 });
+            });
+            if (User.devices.length === 0) {
+                console.log("problem");
+                res.json({
+                    message: 'Devices empty'
+                })
             }
+            else if (sent === 0) {
+                sent++;
+                setTimeout(function(){
+                    res.json({
+                        message: 'ok',
+                        rows: all_devices,
+                        number_rows: p,
+                    });
+                }, 2000);
+
+            }
+
         }
+
+
     });
 });
+
+app.post('/api/device/value_history', function (req, res) {
+    res.header("Access-Control-Allow-Origin", "*");
+    console.log('[Device API] Consult device\'s values.');
+    var all_devices = [];
+    var number_devices = 0;
+    sent = 0;
+    p = 0;
+    models.User.findOne({username: req.body.username, token: req.body.token}, function (err, User) {
+
+
+        if (User === null) {
+            console.log("nao da");
+            res.json({
+                message: 'Invalid session'
+            })
+        }
+        else {
+
+
+            //for (i = 0; i < User.devices.length; i++) {
+
+
+            async.forEach(User.devices, function (Device_user, callback1) {
+
+
+                //console.log(i);
+
+
+
+                models.Device.findOne({name: Device_user}, function (err, Device_added) {
+
+
+                    async.forEach(Device_added.readings, function (reading, callback2) {
+                        p++;
+                        all_devices.push({
+                            id: p,
+                            value: reading.value,
+                            type: reading.type,
+                            timestamp : reading.timestamp,
+                            device: Device_added.name,
+                        });
+
+                    });
+
+
+                });
+            });
+            if (User.devices.length === 0) {
+                console.log("problem");
+                res.json({
+                    message: 'Devices empty'
+                })
+            }
+            else if (sent === 0) {
+                sent++;
+
+                setTimeout(function(){
+                    console.log(all_devices);
+                    res.json({
+                        message: 'ok',
+                        rows: all_devices,
+                        number_rows: p,
+                    });
+                }, 2000);
+
+            }
+
+        }
+
+
+    });
+});
+
 
 /* Changes the state of a device */
 app.post('/api/device/state', function (req, res) {
@@ -333,6 +419,18 @@ app.post('/api/device/state', function (req, res) {
                                         console.log("Changed state");
                                         res.json({
                                             message: 'Device changed'
+                                        });
+                                        Device_added.usage_history.set(Device_added.usage_history.length, 'The device was turned on -' + req.body.current_state + ' - ' + moment().locale('pt').format('l') + '    ' + moment().locale('pt').format('LT'));
+                                        Device_added.save(function (err) {
+                                            if (err) {
+                                                console.error("Error on saving new record");
+                                                console.error(err); // log error to Terminal
+
+
+                                            } else {
+                                                console.log("Device " + Device_added.name + " updated");
+                                            }
+
                                         });
                                     }
                                     else {
@@ -384,7 +482,7 @@ app.post('/api/device/initial', function (req, res) {
                             headers: {
                                 'Content-Type': 'application/x-www-form-urlencoded'
                             },
-                            body: '_id=' + Device_added._id + '&current_state=unmonitored',
+                            body: '_id=' + Device_added._id + '&current_state=unmonitored' + '&device_name=' + Device_added.name,
                         })
                             .then(response => response.json())
                             .then(json => {

@@ -8,7 +8,7 @@ var jwt = require('express-jwt');
 var config = require('./config');
 var jsonwebtoken  = require('jsonwebtoken');
 var moment = require('moment');
-const routes = require('./socket'); // file with module to deal with the routes for each http request
+
 
 /* CORS handling. */
 app.use(require('body-parser').urlencoded({
@@ -171,11 +171,7 @@ app.post('/api/login', function(req, res) {
 });
 
 
-app.post('/api/user/devices', function(req, res) {
-    res.header("Access-Control-Allow-Origin", "*");
-    console.log('[User API] TO DO: Consult user\'s device history.');
-    res.send({message : 'TO DO: Consult user\'s device history.'});
-});
+
 
 
 
@@ -188,18 +184,17 @@ app.listen(3000, function () {
   console.log('[Monitoring API] Ready.');
 });
 
-
-const http = require('http');
+/*const http = require('http');
 const port = '3000'
 app.set('port', port);
 const server = http.createServer(app);
-
+*/
 /*
 const io = require('socket.io')(server); //creates the websocket
 //const io = require('socket.io')(server);
-	 // call the function in routes that awaits connections in the websocket.
+// call the function in routes that awaits connections in the websocket.
 console.log();
 routes.connect(io);
 
-server.listen(port, () => console.log(`API running on localhost:${port}`));*/
-
+server.listen(port, () => console.log(`API running on localhost:${port}`));
+*/
