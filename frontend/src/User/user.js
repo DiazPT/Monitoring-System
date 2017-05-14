@@ -13,17 +13,17 @@ var css = require('react-datagrid/index.css');
 
 var columns_grid = [
     {key: 'id', name: 'id', width: 50},
-    {key: 'activity', name:'activity', width: 400},
+    {key: 'activity', name: 'activity', width: 400},
     {key: 'device', name: 'device', width: 200},
 ];
 
 
 var columns_grid_values = [
-    { key: 'id', name: 'id' },
-    { key: 'value', name: 'value' },
-    { key: 'type', name: 'type' },
-    { key: 'timestamp', name: 'time' },
-    { key: 'device', name: 'device' }];
+    {key: 'id', name: 'id'},
+    {key: 'value', name: 'value'},
+    {key: 'type', name: 'type'},
+    {key: 'timestamp', name: 'time'},
+    {key: 'device', name: 'device'}];
 
 const style = {
     backgroundColor: '#01A9DB',
@@ -46,7 +46,9 @@ const style_div = {
 
 let rows = [];
 let rows_values = [];
+let rows_values_history = [];
 var number_rows = 0;
+var number_rows_history = 0;
 
 //var device_id = "_id":"1003452345","current_state":"on";
 
@@ -80,7 +82,7 @@ class Menu extends Component {
 
         }
 
-
+        this.rowGetter_values_history = this.rowGetter_values_history.bind(this);
         this.rowGetter_values = this.rowGetter_values.bind(this);
         this.rowGetter = this.rowGetter.bind(this);
         this.api_device_add = this.api_device_add.bind(this);
@@ -99,31 +101,16 @@ class Menu extends Component {
         return rows[i];
     }
 
-    rowGetter_values(i){
+    rowGetter_values(i) {
         return rows_values[i];
     }
 
+    rowGetter_values_history(i) {
+        return rows_values_history[i];
+    }
+
     api_init() {
-
-        fetch('http://localhost:3000/api/device/all/', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
-            },
-            body: 'username=' + this.state.username + '&token=' + this.state.token
-        })
-            .then(response => response.json())
-            .then(json => {
-                if (json.message === 'ok') {
-                    device_combobox = json.devices_all;
-                }
-                else {
-                    alert("devices not found");
-
-                }
-            }).catch(error => {
-            console.error(error);
-        });
+/*
 
         fetch('http://localhost:3000/api/device/history', {
             method: 'POST',
@@ -141,7 +128,7 @@ class Menu extends Component {
 
                 }
                 else if (json.message === 'Devices empty') {
-                    alert("List of devices empty");
+
                 }
                 else {
                     alert("devices not added");
@@ -150,72 +137,100 @@ class Menu extends Component {
             }).catch(error => {
             console.error(error);
         });
-
-        fetch('http://localhost:3000/api/producer/producers/all', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
-            },
-            body: 'username=' + this.state.producer + '&token=' + this.state.token
-        })
-            .then(response => response.json())
-            .then(json => {
-                if (json.message === 'ok') {
-
-                    producer_combobox = json.producers;
-
-                }
-                else {
-                    alert("Problem models");
-
-                }
-            }).catch(error => {
-            console.error(error);
-        });
-
-        fetch('http://localhost:3000/api/producer/producers/model', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
-            },
-            body: 'username=' + this.state.producer + '&token=' + this.state.token
-        })
-            .then(response => response.json())
-            .then(json => {
-                if (json.message === 'ok') {
-
-                    model_combobox = json.models;
-                }
-                else {
-                    alert("Problem models");
-
-                }
-            }).catch(error => {
-            console.error(error);
-        });
-
-        fetch('http://localhost:3000/api/producer/producers/type', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
-            },
-            body: 'username=' + this.state.producer + '&token=' + this.state.token
-        })
-            .then(response => response.json())
-            .then(json => {
-                if (json.message === 'ok') {
-
-                    type_combobox = json.types;
+*/
 
 
-                }
-                else {
-                    alert("Problem type");
 
-                }
-            }).catch(error => {
-            console.error(error);
-        });
+
+
+        /*
+        fetch('http://localhost:3000/api/device/all/', {
+         method: 'POST',
+         headers: {
+         'Content-Type': 'application/x-www-form-urlencoded'
+         },
+         body: 'username=' + this.state.username + '&token=' + this.state.token
+         })
+         .then(response => response.json())
+         .then(json => {
+         if (json.message === 'ok') {
+         device_combobox = json.devices_all;
+         }
+         else {
+         alert("devices not found");
+
+         }
+         }).catch(error => {
+         console.error(error);
+         });
+
+
+
+         fetch('http://localhost:3000/api/producer/producers/all', {
+         method: 'POST',
+         headers: {
+         'Content-Type': 'application/x-www-form-urlencoded'
+         },
+         body: 'username=' + this.state.producer + '&token=' + this.state.token
+         })
+         .then(response => response.json())
+         .then(json => {
+         if (json.message === 'ok') {
+
+         producer_combobox = json.producers;
+
+         }
+         else {
+         alert("Problem models");
+
+         }
+         }).catch(error => {
+         console.error(error);
+         });
+
+         fetch('http://localhost:3000/api/producer/producers/model', {
+         method: 'POST',
+         headers: {
+         'Content-Type': 'application/x-www-form-urlencoded'
+         },
+         body: 'username=' + this.state.producer + '&token=' + this.state.token
+         })
+         .then(response => response.json())
+         .then(json => {
+         if (json.message === 'ok') {
+
+         model_combobox = json.models;
+         }
+         else {
+         alert("Problem models");
+
+         }
+         }).catch(error => {
+         console.error(error);
+         });
+
+         fetch('http://localhost:3000/api/producer/producers/type', {
+         method: 'POST',
+         headers: {
+         'Content-Type': 'application/x-www-form-urlencoded'
+         },
+         body: 'username=' + this.state.producer + '&token=' + this.state.token
+         })
+         .then(response => response.json())
+         .then(json => {
+         if (json.message === 'ok') {
+
+         type_combobox = json.types;
+
+
+         }
+         else {
+         alert("Problem type");
+
+         }
+         }).catch(error => {
+         console.error(error);
+         });*/
     }
 
     onChangecombobox(value) {
@@ -224,22 +239,22 @@ class Menu extends Component {
         console.log('Boolean Select value changed to', value);
     }
 
-    onChangecombobox_producer(value) {
-        this.setState({value});
-        this.state.value_producer = value;
-        console.log('Boolean Select value changed to', value);
+    onChangecombobox_producer(value_producer) {
+        this.setState({value_producer});
+        this.state.value_producer = value_producer;
+        console.log('Boolean Select value changed to', value_producer);
     }
 
-    onChangecombobox_type(value) {
-        this.setState({value});
-        this.state.value_producer = value;
-        console.log('Boolean Select value changed to', value);
+    onChangecombobox_type(value_type) {
+        this.setState({value_type});
+        this.state.value_type = value_type;
+        console.log('Boolean Select value changed to', value_type);
     }
 
-    onChangecombobox_model(value) {
-        this.setState({value});
-        this.state.value_producer = value;
-        console.log('Boolean Select value changed to', value);
+    onChangecombobox_model(value_model) {
+        this.setState({value_model});
+        this.state.value_model = value_model;
+        console.log('Boolean Select value changed to', value_model);
     }
 
     api_device_history() {
@@ -258,6 +273,13 @@ class Menu extends Component {
 
                         rows = json.rows;
                         number_rows = json.number_rows;
+
+                        setTimeout(() => {
+                            this.setState({
+                                component: '3',
+                                button_clicked_history: '1',
+                            })
+                        }, 50)
                     }
                     else if (json.message === 'Devices empty') {
                         alert("List of devices empty");
@@ -270,10 +292,6 @@ class Menu extends Component {
                 console.error(error);
             });
 
-            this.setState({
-                component: '3',
-                button_clicked_history: '1',
-            })
 
         }
         if (this.state.button_clicked_history == '1') {
@@ -288,7 +306,6 @@ class Menu extends Component {
 
 
     api_device_add() {
-
 
 
         if (this.state.button_clicked_device_regist == '0') {
@@ -359,10 +376,14 @@ class Menu extends Component {
                 console.error(error);
             });
 
-            this.setState({
-                component: '1',
-                button_clicked_device_regist: '1',
-            })
+
+            setTimeout(() => {
+                this.setState({
+                    component: '1',
+                    button_clicked_device_regist: '1',
+                })
+            }, 5000)
+
         }
         if (this.state.button_clicked_device_regist == '1') {
             this.setState({
@@ -375,10 +396,6 @@ class Menu extends Component {
 
     api_device_remove() {
         if (this.state.button_clicked_device_remove == '0') {
-            this.setState({
-                component: '2',
-                button_clicked_device_remove: '1',
-            })
 
             fetch('http://localhost:3000/api/device/all/', {
                 method: 'POST',
@@ -391,6 +408,12 @@ class Menu extends Component {
                 .then(json => {
                     if (json.message === 'ok') {
                         device_combobox = json.devices_all;
+                        setTimeout(() => {
+                            this.setState({
+                                component: '2',
+                                button_clicked_device_remove: '1',
+                            })
+                        }, 50)
                     }
                     else {
                         alert("devices not found");
@@ -425,6 +448,12 @@ class Menu extends Component {
                 .then(json => {
                     if (json.message === 'ok') {
                         device_combobox = json.devices_all;
+                        setTimeout(() => {
+                            this.setState({
+                                component: '4',
+                                button_clicked_device_state: '1',
+                            })
+                        }, 50)
                     }
                     else {
                         alert("devices not found");
@@ -434,11 +463,6 @@ class Menu extends Component {
                 console.error(error);
             });
 
-
-            this.setState({
-                component: '4',
-                button_clicked_device_state: '1',
-            })
         }
         if (this.state.button_clicked_device_state == '1') {
             this.setState({
@@ -450,6 +474,7 @@ class Menu extends Component {
     }
 
     api_device_monitor() {
+
         if (this.state.button_clicked_monitor == '0') {
 
             fetch('http://localhost:3000/api/device/value_history', {
@@ -463,11 +488,21 @@ class Menu extends Component {
                 .then(json => {
                     if (json.message === 'ok') {
 
-                        rows_values = json.rows;
-                        number_rows = json.number_rows;
+
+                        rows_values_history = json.rows;
+                        number_rows_history = json.number_rows;
+
+
+                        setTimeout(() => {
+                            this.setState({
+                                component: '5',
+                                button_clicked_monitor: '1',
+                            })
+                        }, 50)
+
                     }
                     else if (json.message === 'Devices empty') {
-                        alert("List of devices empty");
+
                     }
                     else {
                         alert("devices not added");
@@ -476,12 +511,6 @@ class Menu extends Component {
                 }).catch(error => {
                 console.error(error);
             });
-
-            this.setState({
-                component: '5',
-                button_clicked_monitor: '1',
-            })
-
         }
         if (this.state.button_clicked_monitor == '1') {
 
@@ -493,9 +522,10 @@ class Menu extends Component {
         }
     }
 
+
     handleClickRegisterDevice() {
 
-        if (this.state.producer === '' || this.state.device_name === '' || this.state.device_type === '' || this.state.device_model === '') {
+        if (this.state.value_producer === '' || this.state.device_name === '' || this.state.value_type === '' || this.state.value_model === '') {
             alert("Fill the blank fields");
         }
         else {
@@ -508,7 +538,7 @@ class Menu extends Component {
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded'
                     },
-                    body: 'username=' + this.state.username + '&token=' + this.state.token + '&device_name=' + this.state.device_name + '&device_type=' + this.state.device_type + '&device_model=' + this.state.device_model + '&producer=' + this.state.producer
+                    body: 'username=' + this.state.username + '&token=' + this.state.token + '&device_name=' + this.state.device_name + '&device_type=' + this.state.value_type + '&device_model=' + this.state.value_model + '&producer=' + this.state.value_producer
                 })
                     .then(response => response.json())
                     .then(json => {
@@ -802,16 +832,16 @@ class Menu extends Component {
                         <div >
                             <div className="activity">
                                 <AppBar
-                                    title="Device history"
+                                    title="Monitor Devices"
                                     iconElementLeft={<i className=" fa fa-address-card-o fa-adjust fa-3x"></i>}
 
                                 />
                                 <ReactDataGrid
 
                                     columns={columns_grid_values}
-                                    rowsCount={number_rows}
+                                    rowsCount={number_rows_history}
                                     minHeight={200}
-                                    rowGetter={this.rowGetter_values}
+                                    rowGetter={this.rowGetter_values_history}
 
                                     //if you don't want to show a column menu to show/hide columns, use
                                     //withColumnMenu={false}
@@ -867,7 +897,8 @@ class Menu extends Component {
                         onClose={() => console.log('onClose')}
                     >
 
-                        <div className="button" onClick={(event) => this.api_init()}><i className="fa fa-bars fa-2x" />
+                        <div className="button" onClick={(event) => this.api_init()}><i
+                            className="fa fa-bars fa-2x"/>
                         </div>
                         <div className="button" style={style} onClick={(event) => this.api_device_add()}><i
                             className="fa fa-plus fa-2x"/></div>
@@ -888,7 +919,10 @@ class Menu extends Component {
 
     }
 }
-export default Menu;
+
+export
+default
+Menu;
 
 
 /*<div className="button" style={style}><i className="fa fa-globe" /></div>

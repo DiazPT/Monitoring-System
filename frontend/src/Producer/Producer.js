@@ -25,8 +25,29 @@ const style = {
 
 };
 
+
+var columns_grid_values = [
+    {key: 'id', name: 'id', width: 75},
+    {key: 'username', name: 'username', width: 100},
+    {key: 'activity', name: 'activity'},
+    {key: 'time', name: 'time', width: 175},
+];
+
+var columns_grid_values_type = [
+    {key: 'id', name: 'id', width: 75},
+    {key: 'username', name: 'username', width: 100},
+    {key: 'activity', name: 'activity'},
+    {key: 'device', name: 'device', width: 100},
+];
+
+var user_grid = [];
+var type_grid = [];
+var device_grid = [];
+var number_rows_history = 0;
 var device_combobox = [];
 var type_combobox = [];
+var device_combobox_user = [];
+var all_device_combobox = [];
 
 const smallstyle = {
     backgroundColor: '#A9F5BC',
@@ -52,14 +73,34 @@ class MenuProducer extends Component {
             //debug : 'IS Work 2 Front End - Demo Version\n'
             producer: '',
             name_model: '',
+            Device_type: '',
             token: '',
             button_click_model: 0,
             component: '0',
             button_click_model_rem: 0,
             button_click_type_rem: 0,
             button_click_type_add: 0,
+            button_click_user_hist: 0,
+            button_click_type_hist: 0,
+            button_click_device_hist: 0,
+            value_type: '',
+            value_model: '',
+            value_user: '',
+            value_device: '',
         }
 
+        this.rowGetter_device = this.rowGetter_device.bind(this);
+        this.onChangecombobox_device = this.onChangecombobox_device.bind(this);
+        this.handleClick_device_history = this.handleClick_device_history.bind(this);
+        this.rowGetter_user = this.rowGetter_user.bind(this);
+        this.handleClick_model_add = this.handleClick_model_add.bind(this);
+        this.handleClick_type_add = this.handleClick_type_add.bind(this);
+        this.handleClick_model_remove = this.handleClick_model_remove.bind(this);
+        this.handleClick_type_remove = this.handleClick_type_remove.bind(this);
+        this.handleClick_user_history = this.handleClick_user_history.bind(this);
+        this.onChangecombobox_user = this.onChangecombobox_user.bind(this);
+        this.onChangecombobox_type = this.onChangecombobox_type.bind(this);
+        this.onChangecombobox_model = this.onChangecombobox_model.bind(this);
         this.api_init = this.api_init.bind(this);
         this.api_producer_product_model_add = this.api_producer_product_model_add.bind(this);
         this.api_producer_product_model_remove = this.api_producer_product_model_remove.bind(this);
@@ -71,8 +112,268 @@ class MenuProducer extends Component {
 
     }
 
+
+
     handleClick_model_add() {
 
+        if (this.state.name_model === null) {
+            alert("Fill the blanked field");
+        }
+        else {
+            fetch('http://localhost:3000/api/producer/productmodel/add', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: 'username=' + this.state.producer + '&token=' + this.state.token + '&name_model=' + this.state.name_model
+            })
+                .then(response => response.json())
+                .then(json => {
+                    if (json.message === 'ok') {
+                        alert("Added model");
+                    }
+                    else {
+                        alert("Problem models");
+
+                    }
+                }).catch(error => {
+                console.error(error);
+            });
+            this.setState({
+                component: '0',
+                button_click_model: 0
+
+            });
+        }
+
+    }
+
+    handleClick_type_add() {
+
+        if (this.state.name_model === null) {
+            alert("Fill the blanked field");
+        }
+        else {
+            fetch('http://localhost:3000/api/producer/devicetype/add', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: 'username=' + this.state.producer + '&token=' + this.state.token + '&name_type=' + this.state.Device_type
+            })
+                .then(response => response.json())
+                .then(json => {
+                    if (json.message === 'ok') {
+                        alert("Added type");
+                    }
+                    else {
+                        alert("Problem models");
+
+                    }
+                }).catch(error => {
+                console.error(error);
+            });
+            this.setState({
+                component: '0',
+                button_click_type_add: 0
+
+            });
+        }
+
+    }
+
+    handleClick_model_remove() {
+
+        if (this.state.name_model === null) {
+            alert("Fill the blanked field");
+        }
+        else {
+            fetch('http://localhost:3000/api/producer/productmodel/remove', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: 'username=' + this.state.producer + '&token=' + this.state.token + '&name_model=' + this.state.value_model
+            })
+                .then(response => response.json())
+                .then(json => {
+                    if (json.message === 'ok') {
+                        alert("Removed model");
+                    }
+                    else {
+                        alert("Problem models");
+
+                    }
+                }).catch(error => {
+                console.error(error);
+            });
+            this.setState({
+                component: '0',
+                button_click_model_rem: 0
+
+            });
+        }
+
+    }
+
+    handleClick_type_remove() {
+
+        if (this.state.name_type === null) {
+            alert("Fill the blanked field");
+        }
+        else {
+            fetch('http://localhost:3000/api/producer/devicetype/remove', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: 'username=' + this.state.producer + '&token=' + this.state.token + '&name_type=' + this.state.value_type
+            })
+                .then(response => response.json())
+                .then(json => {
+                    if (json.message === 'ok') {
+                        alert("Removed type");
+                    }
+                    else {
+                        alert("Problem type");
+
+                    }
+                }).catch(error => {
+                console.error(error);
+            });
+            this.setState({
+                component: '0',
+                button_click_type_rem: 0
+
+            });
+        }
+
+    }
+
+    handleClick_user_history(){
+        if (this.state.value_user === null) {
+            alert("Fill the blanked field");
+        }
+        else {
+            fetch('http://localhost:3000/api/user/history', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: 'username=' + this.state.producer + '&token=' + this.state.token + '&value_user=' + this.state.value_user
+            })
+                .then(response => response.json())
+                .then(json => {
+                    if (json.message === 'ok') {
+
+                        number_rows_history = json.number_rows;
+                        user_grid = json.history;
+                        setTimeout(() => {
+                            alert("User history found");
+                            this.setState({
+                                component: '8',
+                                button_click_user_hist:1,
+                            })
+                        }, 50)
+                    }
+                    else {
+                        alert("Problem user");
+
+                    }
+                }).catch(error => {
+                console.error(error);
+            });
+
+
+        }
+    }
+
+    handleClick_type_history(){
+        if (this.state.value_type === null) {
+            alert("Fill the blanked field");
+        }
+        else {
+            fetch('http://localhost:3000/api/producer/devicetype/history', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: 'username=' + this.state.producer + '&token=' + this.state.token + '&value_type=' + this.state.value_type
+            })
+                .then(response => response.json())
+                .then(json => {
+                    if (json.message === 'ok') {
+
+                        number_rows_history = json.number_rows;
+                        type_grid = json.rows;
+                        setTimeout(() => {
+                            alert("Device type history found");
+                            this.setState({
+                                component: '7',
+                                button_click_type_hist:1,
+                            })
+                        }, 50)
+                    }
+                    else {
+                        alert("Problem user");
+
+                    }
+                }).catch(error => {
+                console.error(error);
+            });
+
+
+        }
+    }
+
+    handleClick_device_history(){
+        if (this.state.value_device === null) {
+            alert("Fill the blanked field");
+        }
+        else {
+            fetch('http://localhost:3000/api/producer/deviceselected/history', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: 'username=' + this.state.producer + '&token=' + this.state.token + '&value_device=' + this.state.value_device
+            })
+                .then(response => response.json())
+                .then(json => {
+                    if (json.message === 'ok') {
+
+                        number_rows_history = json.number_rows;
+                        device_grid = json.rows;
+                        setTimeout(() => {
+                            alert("Device history found");
+                            this.setState({
+                                component: '10',
+                                button_click_device_hist:1,
+                            })
+                        }, 50)
+                    }
+                    else {
+                        alert("Problem user");
+
+                    }
+                }).catch(error => {
+                console.error(error);
+            });
+
+
+        }
+    }
+
+    rowGetter_user(i) {
+        return user_grid[i];
+    }
+
+    rowGetter_type(i) {
+        return type_grid[i];
+    }
+
+    rowGetter_device(i) {
+        return device_grid[i];
     }
 
     api_producer_product_model_add() {
@@ -133,24 +434,23 @@ class MenuProducer extends Component {
     }
 
     api_producer_device_type_add() {
-        if (this.state.button_click_type_add === 0) {
+        if (this.state.button_click_type_hist === 0) {
 
             this.setState({
-                component: '3',
-                button_click_type_add: 1
+                component: '6',
+                button_click_type_hist: 1
             });
         }
         else {
             this.setState({
                 component: '0',
-                button_click_type_add: 0
+                button_click_type_hist: 0
 
             });
         }
     }
 
     api_producer_device_type_remove() {
-
 
 
         if (this.state.button_click_type_rem === 0) {
@@ -192,24 +492,148 @@ class MenuProducer extends Component {
     }
 
     api_producer_device_type_history() {
+        if (this.state.button_click_type_add === 0) {
 
+            fetch('http://localhost:3000/api/producer/device/types', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: 'username=' + this.state.producer + '&token=' + this.state.token
+            })
+                .then(response => response.json())
+                .then(json => {
+                    if (json.message === 'ok') {
+
+                        type_combobox = json.models;
+                    }
+                    else {
+                        alert("Problem models");
+
+                    }
+                }).catch(error => {
+                console.error(error);
+            });
+
+            this.setState({
+                component: '6',
+                button_click_type_add: 1
+            });
+        }
+        else {
+            this.setState({
+                component: '0',
+                button_click_type_add: 0
+
+            });
+        }
     }
 
     api_device_history() {
+        if (this.state.button_click_device_hist === 0) {
 
+            fetch('http://localhost:3000/api/producer/device/devices_all', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: 'username=' + this.state.producer + '&token=' + this.state.token
+            })
+                .then(response => response.json())
+                .then(json => {
+                    if (json.message === 'ok') {
+
+                        all_device_combobox = json.devices;
+                    }
+                    else {
+                        alert("Problem models");
+
+                    }
+                }).catch(error => {
+                console.error(error);
+            });
+            setTimeout(() => {
+                this.setState({
+                    component: '9',
+                    button_click_device_hist: 1
+                })
+            }, 500)
+        }
+        else {
+            this.setState({
+                component: '0',
+                button_click_device_hist: 0
+
+            });
+        }
     }
 
     api_user_history() {
+        if (this.state.button_click_user_hist === 0) {
 
+            fetch('http://localhost:3000/api/producers/user_all', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: 'username=' + this.state.producer + '&token=' + this.state.token
+            })
+                .then(response => response.json())
+                .then(json => {
+                    if (json.message === 'ok') {
+
+                        device_combobox_user = json.devices;
+                    }
+                    else {
+                        alert("Problem models");
+
+                    }
+                }).catch(error => {
+                console.error(error);
+            });
+
+            setTimeout(() => {
+                this.setState({
+                    component: '5',
+                    button_click_user_hist: 1
+                })
+            }, 500)
+
+        }
+        else {
+            this.setState({
+                component: '0',
+                button_click_user_hist: 0
+
+            });
+        }
     }
 
-    onChangecombobox(value) {
-        this.setState({value});
-        this.state.value = value;
-        console.log('Boolean Select value changed to', value);
+    onChangecombobox_device(value_device){
+        this.setState({value_device});
+        this.state.value_device = value_device;
+        console.log('Boolean Select value changed to', value_device);
     }
 
-    api_init(){
+    onChangecombobox_user(value_user){
+        this.setState({value_user});
+        this.state.value_user = value_user;
+        console.log('Boolean Select value changed to', value_user);
+    }
+
+    onChangecombobox_model(value_model) {
+        this.setState({value_model});
+        this.state.value_model = value_model;
+        console.log('Boolean Select value changed to', value_model);
+    }
+
+    onChangecombobox_type(value_type) {
+        this.setState({value_type});
+        this.state.value_type = value_type;
+        console.log('Boolean Select value changed to', value_type);
+    }
+
+    api_init() {
         fetch('http://localhost:3000/api/producer/device/types', {
             method: 'POST',
             headers: {
@@ -253,12 +677,10 @@ class MenuProducer extends Component {
         });
 
     }
+
     /*device_combobox*/
 
     render() {
-
-
-
 
 
         let productModel;
@@ -365,10 +787,10 @@ class MenuProducer extends Component {
                             <div className="section">
                                 <h3 className="section-heading">{this.props.label}</h3>
                                 <Select
-                                    onChange={this.onChangecombobox}
+                                    onChange={this.onChangecombobox_model}
                                     options={device_combobox}
                                     simpleValue
-                                    value={this.state.value}
+                                    value={this.state.value_model}
                                     clearable="false"
                                 />
                             </div>
@@ -376,7 +798,7 @@ class MenuProducer extends Component {
                             <br/>
                             <br/>
                             <RaisedButton label="Submit" primary={true} style={submit_style}
-                                          onClick={(event) => this.handleClick_model_add()}/>
+                                          onClick={(event) => this.handleClick_model_remove()}/>
                             <br/>
                             <br/>
                             <br/>
@@ -408,7 +830,7 @@ class MenuProducer extends Component {
                             />
                             <br/>
                             <RaisedButton label="Submit" primary={true} style={submit_style}
-                                          onClick={(event) => this.handleClick_model_add()}/>
+                                          onClick={(event) => this.handleClick_type_add()}/>
                             <br/>
                             <br/>
                             <br/>
@@ -437,10 +859,10 @@ class MenuProducer extends Component {
                             <div className="section">
                                 <h3 className="section-heading">{this.props.label}</h3>
                                 <Select
-                                    onChange={this.onChangecombobox}
+                                    onChange={this.onChangecombobox_type}
                                     options={type_combobox}
                                     simpleValue
-                                    value={this.state.value}
+                                    value={this.state.value_type}
                                     clearable="false"
                                 />
                             </div>
@@ -448,7 +870,7 @@ class MenuProducer extends Component {
                             <br/>
                             <br/>
                             <RaisedButton label="Submit" primary={true} style={submit_style}
-                                          onClick={(event) => this.handleClick_model_add()}/>
+                                          onClick={(event) => this.handleClick_type_remove()}/>
                             <br/>
                             <br/>
                             <br/>
@@ -472,15 +894,15 @@ class MenuProducer extends Component {
                 <div>
                     <MuiThemeProvider>
                         <div>
-                            <AppBar title="Device Type"
-                                    iconElementLeft={<i className=" fa fa-plus fa-adjust fa-3x"></i>}/>
+                            <AppBar title="User History"
+                                    iconElementLeft={<i className=" fa fa-address-card-o fa-adjust fa-3x"></i>}/>
                             <div className="section">
                                 <h3 className="section-heading">{this.props.label}</h3>
                                 <Select
-                                    onChange={this.onChangecombobox}
-                                    options={device_combobox}
+                                    onChange={this.onChangecombobox_user}
+                                    options={device_combobox_user}
                                     simpleValue
-                                    value={this.state.value}
+                                    value={this.state.value_user}
                                     clearable="false"
                                 />
                             </div>
@@ -488,7 +910,7 @@ class MenuProducer extends Component {
                             <br/>
                             <br/>
                             <RaisedButton label="Submit" primary={true} style={submit_style}
-                                          onClick={(event) => this.handleClick_model_add()}/>
+                                          onClick={(event) => this.handleClick_user_history()}/>
                             <br/>
                             <br/>
                             <br/>
@@ -512,15 +934,15 @@ class MenuProducer extends Component {
                 <div>
                     <MuiThemeProvider>
                         <div>
-                            <AppBar title="Device Type"
-                                    iconElementLeft={<i className=" fa fa-plus fa-adjust fa-3x"></i>}/>
+                            <AppBar title="Device type History"
+                                    iconElementLeft={<i className=" fa fa-address-card-o fa-adjust fa-3x"></i>}/>
                             <div className="section">
                                 <h3 className="section-heading">{this.props.label}</h3>
                                 <Select
-                                    onChange={this.onChangecombobox}
-                                    options={device_combobox}
+                                    onChange={this.onChangecombobox_type}
+                                    options={type_combobox}
                                     simpleValue
-                                    value={this.state.value}
+                                    value={this.state.value_type}
                                     clearable="false"
                                 />
                             </div>
@@ -528,7 +950,7 @@ class MenuProducer extends Component {
                             <br/>
                             <br/>
                             <RaisedButton label="Submit" primary={true} style={submit_style}
-                                          onClick={(event) => this.handleClick_model_add()}/>
+                                          onClick={(event) => this.handleClick_type_history()}/>
                             <br/>
                             <br/>
                             <br/>
@@ -548,19 +970,100 @@ class MenuProducer extends Component {
 
         }
         if (this.state.component === '7') {
+            producerComponent=
+                <div>
+                    <MuiThemeProvider >
+                        <div >
+                            <div className="activity">
+                                <AppBar
+                                    title="Device type history"
+                                    iconElementLeft={<i className=" fa fa-address-card-o fa-adjust fa-3x"></i>}
+
+                                />
+                                <ReactDataGrid
+
+                                    columns={columns_grid_values_type}
+                                    rowsCount={number_rows_history}
+                                    minHeight={200}
+                                    rowGetter={this.rowGetter_type}
+
+                                    //if you don't want to show a column menu to show/hide columns, use
+                                    //withColumnMenu={false}
+                                />
+                            </div>
+
+                            <br/>
+                            <br/>
+                            <br/>
+                            <br/>
+                            <br/>
+                            <br/>
+                            <br/>
+                            <br/>
+                            <br/>
+                            <br/>
+                            <br/>
+                            <br/>
+                            <br/>
+                        </div>
+                    </MuiThemeProvider >
+                </div>;
+
+        }
+        if (this.state.component === '8'){
+            producerComponent=
+            <div>
+                <MuiThemeProvider >
+                    <div >
+                        <div className="activity">
+                            <AppBar
+                                title="User history"
+                                iconElementLeft={<i className=" fa fa-address-card-o fa-adjust fa-3x"></i>}
+
+                            />
+                            <ReactDataGrid
+
+                                columns={columns_grid_values}
+                                rowsCount={number_rows_history}
+                                minHeight={200}
+                                rowGetter={this.rowGetter_user}
+
+                                //if you don't want to show a column menu to show/hide columns, use
+                                //withColumnMenu={false}
+                            />
+                        </div>
+
+                        <br/>
+                        <br/>
+                        <br/>
+                        <br/>
+                        <br/>
+                        <br/>
+                        <br/>
+                        <br/>
+                        <br/>
+                        <br/>
+                        <br/>
+                        <br/>
+                        <br/>
+                    </div>
+                </MuiThemeProvider >
+            </div>;
+        }
+        if (this.state.component === '9') {
             producerComponent =
                 <div>
                     <MuiThemeProvider>
                         <div>
-                            <AppBar title="Device Type"
-                                    iconElementLeft={<i className=" fa fa-plus fa-adjust fa-3x"></i>}/>
+                            <AppBar title="Device History"
+                                    iconElementLeft={<i className=" fa fa-address-card-o fa-adjust fa-3x"></i>}/>
                             <div className="section">
                                 <h3 className="section-heading">{this.props.label}</h3>
                                 <Select
-                                    onChange={this.onChangecombobox}
-                                    options={device_combobox}
+                                    onChange={this.onChangecombobox_device}
+                                    options={all_device_combobox}
                                     simpleValue
-                                    value={this.state.value}
+                                    value={this.state.value_device}
                                     clearable="false"
                                 />
                             </div>
@@ -568,7 +1071,7 @@ class MenuProducer extends Component {
                             <br/>
                             <br/>
                             <RaisedButton label="Submit" primary={true} style={submit_style}
-                                          onClick={(event) => this.handleClick_model_add()}/>
+                                          onClick={(event) => this.handleClick_device_history()}/>
                             <br/>
                             <br/>
                             <br/>
@@ -587,9 +1090,52 @@ class MenuProducer extends Component {
                 </div>;
 
         }
+        if (this.state.component === '10') {
+            producerComponent=
+                <div>
+                    <MuiThemeProvider >
+                        <div >
+                            <div className="activity">
+                                <AppBar
+                                    title="Device history"
+                                    iconElementLeft={<i className=" fa fa-address-card-o fa-adjust fa-3x"></i>}
+
+                                />
+                                <ReactDataGrid
+
+                                    columns={columns_grid_values_type}
+                                    rowsCount={number_rows_history}
+                                    minHeight={200}
+                                    rowGetter={this.rowGetter_device}
+
+                                    //if you don't want to show a column menu to show/hide columns, use
+                                    //withColumnMenu={false}
+                                />
+                            </div>
+
+                            <br/>
+                            <br/>
+                            <br/>
+                            <br/>
+                            <br/>
+                            <br/>
+                            <br/>
+                            <br/>
+                            <br/>
+                            <br/>
+                            <br/>
+                            <br/>
+                            <br/>
+                        </div>
+                    </MuiThemeProvider >
+                </div>;
+
+        }
 
         return (
             <div>
+
+
 
                 {producerComponent}
 

@@ -22,7 +22,6 @@ app.post('/api/device/add', function (req, res) {
         }
         else {
 
-            console.log("aqui");
 
             models.Device.findOne({name: req.body.device_name}, function (err, device) {
 
@@ -70,13 +69,37 @@ app.post('/api/device/add', function (req, res) {
                                 user: req.body.username
                             }, function (err, device) {
 
+                                models.Producer.findOne({name: req.body.producer}, function (err, producer_device) {
+
+
+                                    if (producer_device.device_types.indexOf(req.body.device_type) == -1)
+                                        producer_device.device_types.set(producer_device.device_types.length, req.body.device_type);
+                                    if (producer_device.device_models.indexOf(req.body.device_model) == -1)
+                                        producer_device.device_models.set(producer_device.device_models.length, req.body.device_model);
+                                    if (producer_device.devices.indexOf(req.body.device_name) == -1)
+                                        producer_device.devices.set(producer_device.devices.length, req.body.device_name);
+
+                                    producer_device.save(function (err) {
+                                        if (err) {
+                                            console.error("Error on updating producer");
+                                            console.error(err); // log error to Terminal
+
+                                        } else {
+                                            console.log("Producer updated");
+                                            //recordCreated(newRecord);
+
+                                        }
+                                    });
+
+                                });
+
 
                                 fetch('http://localhost:8182/api/device/add', {
                                     method: 'POST',
                                     headers: {
                                         'Content-Type': 'application/x-www-form-urlencoded'
                                     },
-                                    body: '_id=' + device._id + '&current_state=on',
+                                    body: '_id=' + device._id + '&current_state=on' + '&device_name=' + req.body.device_name,
                                 })
                                     .then(response => response.json())
                                     .then(json => {
@@ -87,6 +110,7 @@ app.post('/api/device/add', function (req, res) {
 
                                          }*/
                                         if (json.result === '0') {
+                                            console.log("device added");
                                             res.json({
                                                 message: 'device added'
                                             });
@@ -112,29 +136,7 @@ app.post('/api/device/add', function (req, res) {
 
                                             });
 
-                                            models.Producer.findOne({name: req.body.producer}, function (err, producer_device) {
 
-
-                                                if (producer_device.device_types.indexOf(req.body.device_type) == -1)
-                                                    producer_device.device_types.set(producer_device.device_types.length, req.body.device_type);
-                                                if (producer_device.device_models.indexOf(req.body.device_model) == -1)
-                                                    producer_device.device_models.set(producer_device.device_models.length, req.body.device_model);
-                                                if (producer_device.devices.indexOf(req.body.device_name) == -1)
-                                                    producer_device.devices.set(producer_device.devices.length, req.body.device_name);
-
-                                                producer_device.save(function (err) {
-                                                    if (err) {
-                                                        console.error("Error on updating producer");
-                                                        console.error(err); // log error to Terminal
-
-                                                    } else {
-                                                        console.log("Producer updated");
-                                                        //recordCreated(newRecord);
-
-                                                    }
-                                                });
-
-                                            });
                                         }
                                         else {
                                             res.json({
@@ -183,6 +185,30 @@ app.post('/api/device/remove', function (req, res) {
         }
         else {
             models.Device.findOne({name: req.body.device}, function (err, device_to_remove) {
+
+                fetch('http://localhost:8182/api/device/remove', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    body: '_id=' + device_to_remove._id,
+                })
+                    .then(response => response.json())
+                    .then(json => {
+                        /*if(json.message === 'result, 0'){
+
+                         }
+                         else{
+
+                         }*/
+                        if (json.result === '0') {
+                            console.log("device removed");
+
+                        }
+                    });
+
+
+
                 var producer_removing = device_to_remove.producer;
 
                 models.Device.remove({name: req.body.device}, function (err, removed) {
@@ -207,11 +233,31 @@ app.post('/api/device/remove', function (req, res) {
                                         res.json({
                                             message: 'Device removed'
                                         })
+                                        var newActivity = new models.User_history({
+                                            username: req.body.username,
+                                            activity: 'Removed the device: ' + req.body.device,
+                                            time: moment().locale('pt').format('l') + '    ' + moment().locale('pt').format('LT'),
+                                        });
+
+                                        newActivity.save(function (err) {
+                                            if (err) {
+                                                console.error("Error on saving activity");
+                                                console.error(err); // log error to Terminal
+
+                                            } else {
+                                                console.log("History updated");
+                                                //recordCreated(newRecord);
+
+                                            }
+
+                                        });
                                     }
                                 });
-                            });
+                            })
+                                ;
+                            }
                         }
-                    });
+                        );
 
                 });
             });
@@ -277,10 +323,6 @@ app.post('/api/device/history', function (req, res) {
             async.forEach(User.devices, function (Device_user, callback1) {
 
 
-                //console.log(i);
-
-                console.log(Device_user);
-
                 models.Device.findOne({name: Device_user}, function (err, Device_added) {
 
 
@@ -305,13 +347,13 @@ app.post('/api/device/history', function (req, res) {
             }
             else if (sent === 0) {
                 sent++;
-                setTimeout(function(){
+                setTimeout(function () {
                     res.json({
                         message: 'ok',
                         rows: all_devices,
                         number_rows: p,
                     });
-                }, 2000);
+                }, 100);
 
             }
 
@@ -328,6 +370,7 @@ app.post('/api/device/value_history', function (req, res) {
     var number_devices = 0;
     sent = 0;
     p = 0;
+    number = 0;
     models.User.findOne({username: req.body.username, token: req.body.token}, function (err, User) {
 
 
@@ -346,18 +389,16 @@ app.post('/api/device/value_history', function (req, res) {
             async.forEach(User.devices, function (Device_user, callback1) {
 
 
-
-
                 models.Device.findOne({name: Device_user}, function (err, Device_added) {
 
 
                     async.forEach(Device_added.readings, function (read, callback2) {
 
-                        var value_string =  read.substring(read.indexOf(':')+3, read.indexOf(',')-1);
+                        var value_string = read.substring(read.indexOf(':') + 3, read.indexOf(',') - 1);
 
                         //console.log(read);
-                        var type_string =  read.substring(read.indexOf('type: ')+7, read.indexOf('timestamp')-5);
-                        var timestamp_string =  read.substring(read.indexOf('timestamp: ')+12, read.indexOf('_id')-5);
+                        var type_string = read.substring(read.indexOf('type: ') + 7, read.indexOf('timestamp') - 5);
+                        var timestamp_string = read.substring(read.indexOf('timestamp: ') + 12, read.indexOf('_id') - 5);
                         //console.log(value_string);
 
                         //console.log(type_string);
@@ -367,14 +408,15 @@ app.post('/api/device/value_history', function (req, res) {
                             id: p,
                             value: value_string,
                             type: type_string,
-                            timestamp : timestamp_string,
+                            timestamp: timestamp_string,
                             device: Device_added.name,
                         });
+                        number++;
                         //console.log(all_devices[p]);
 
                         p++;
                     });
-                p=0;
+                    p = 0;
 
                 });
             });
@@ -387,14 +429,13 @@ app.post('/api/device/value_history', function (req, res) {
             else if (sent === 0) {
                 sent++;
 
-                setTimeout(function(){
-                    //console.log(all_devices);
+                setTimeout(function () {
                     res.json({
                         message: 'ok',
                         rows: all_devices,
-                        number_rows: p,
+                        number_rows: number,
                     });
-                }, 2000);
+                }, 100);
 
             }
 
@@ -460,9 +501,28 @@ app.post('/api/device/state', function (req, res) {
 
                                             } else {
                                                 console.log("Device " + Device_added.name + " updated");
+                                                var newActivity = new models.User_history({
+                                                    username: req.body.username,
+                                                    activity: 'Changed the state of the device:' + Device_added.name + ' to - ' + req.body.current_state,
+                                                    time: moment().locale('pt').format('l') + '    ' + moment().locale('pt').format('LT'),
+                                                });
+
+                                                newActivity.save(function (err) {
+                                                    if (err) {
+                                                        console.error("Error on saving activity");
+                                                        console.error(err); // log error to Terminal
+
+                                                    } else {
+                                                        console.log("History updated");
+                                                        //recordCreated(newRecord);
+
+                                                    }
+
+                                                });
                                             }
 
                                         });
+
                                     }
                                     else {
                                         console.log("Problem changing");
@@ -521,7 +581,7 @@ app.post('/api/device/initial', function (req, res) {
                                     console.log("Added old device");
                                 }
                                 else
-                                    console.log("Added old device");
+                                    console.log("Not added old device");
 
                             });
                         Device_added.usage_history.set(Device_added.usage_history.length, 'The device was turned on - unmonitored - ' + moment().locale('pt').format('l') + '    ' + moment().locale('pt').format('LT'));
@@ -532,7 +592,7 @@ app.post('/api/device/initial', function (req, res) {
 
 
                             } else {
-                                console.log("Device " + Device_added.name + " updated");
+                                console.log("Device " + Device_added.name + " updated on");
                             }
 
                         });
