@@ -119,6 +119,28 @@ app.post('/api/producer/productmodel/add', function (req, res) {
                     } else {
                         console.log("Created a new device model!");
                         //recordCreated(newRecord);
+
+                        var newRecord = new models.ProductModel({
+                            id_product_models: req.body.referencia,
+                            name: req.body.name_model,
+                            stock: req.body.stock,
+                            sells: '0',
+                        });
+
+
+                        newRecord.save(function (err) {
+                            if (err) {
+                                console.error("Error on saving new record");
+                                console.error(err); // log error to Terminal
+                                res.send({message: 'Error 404'});
+                            } else {
+                                console.log("Created a new stock!");
+                                //recordCreated(newRecord);
+                            }
+
+                        });
+
+
                         res.json({
                             message: 'ok',
                         });
@@ -324,6 +346,53 @@ app.post('/api/producer/devicetype/history', function (req, res) {
     });
 });
 
+app.post('/api/producer/devicemodel/history', function (req, res) {
+    res.header("Access-Control-Allow-Origin", "*");
+    console.log('[Device API] Consult a device type history.');
+    var all_devices = [];
+    var number_devices = 0;
+    sent = 0;
+    p = 0;
+    models.Producer.findOne({username: req.body.username, token: req.body.token}, function (err, User) {
+
+
+        if (User === null) {
+            console.log("nao da");
+            res.json({
+                message: 'Invalid session'
+            })
+        }
+        else {
+
+            models.ProductModel.findOne({name: req.body.value_model}, function (err, Model) {
+                all_devices.push({
+                    reference: Model.id_product_models,
+                    name: Model.name,
+                    stock: Model.stock,
+                    sells: Model.sells
+                })
+                p++;
+            });
+
+        }
+
+    });
+    if (sent === 0) {
+        sent++;
+        setTimeout(function () {
+            res.json({
+                message: 'ok',
+                rows: all_devices,
+                number_rows: p,
+            });
+        }, 50);
+
+    }
+
+
+});
+
+
 app.post('/api/producer/deviceselected/history', function (req, res) {
     res.header("Access-Control-Allow-Origin", "*");
     console.log('[Device API] Consult a device\'s history.');
@@ -377,6 +446,40 @@ app.post('/api/producer/deviceselected/history', function (req, res) {
 });
 
 app.post('/api/producer/device/models', function (req, res) {
+    res.header("Access-Control-Allow-Origin", "*");
+    var all_devices = [];
+    models.Producer.findOne({username: req.body.username, token: req.body.token}, function (err, Prod) {
+        if (err) {
+            res.json({
+                message: 'Invalid session'
+            })
+        } else {
+            if (Prod === null) {
+                console.log(req.body.username + '' + req.body.token);
+                console.log("nao da");
+                res.json({
+                    message: 'Invalid session'
+                })
+            }
+            else {
+                for (i = 0; i < Prod.device_models.length; i++) {
+                    all_devices.push({
+                        label: Prod.device_models[i],
+                        value: Prod.device_models[i],
+                    })
+
+                }
+                res.json({
+                    message: 'ok',
+                    models: all_devices
+                });
+            }
+        }
+
+    });
+});
+
+app.post('/api/producer/device/models/all', function (req, res) {
     res.header("Access-Control-Allow-Origin", "*");
     var all_devices = [];
     models.Producer.findOne({username: req.body.username, token: req.body.token}, function (err, Prod) {
@@ -651,5 +754,49 @@ app.post('/api/producer/producers/type', function (req, res) {
 
     });
 });
+
+app.post('/api/producer/device/models/all/ever', function (req, res) {
+    res.header("Access-Control-Allow-Origin", "*");
+    var all_devices = [];
+    models.Producer.findOne({username: req.body.username, token: req.body.token}, function (err, Prod) {
+        if (err) {
+            res.json({
+                message: 'Invalid session'
+            })
+        } else {
+            if (Prod === null) {
+                console.log(req.body.username + '' + req.body.token);
+                console.log("nao da");
+                res.json({
+                    message: 'Invalid session'
+                })
+            }
+            else {
+                models.ProductModel.find({}, function (err, Models) {
+
+                    Models.forEach(function (Model_type) {
+                        all_devices.push({
+                            label: Model_type.name,
+                            value: Model_type.name
+                        })
+
+
+                    });
+                });
+
+                setTimeout(function () {
+                    //console.log(all_devices);
+                    res.json({
+                        message: 'ok',
+                        models: all_devices,
+                    });
+                }, 200);
+            }
+        }
+
+    });
+});
+
+
 
 

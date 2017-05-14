@@ -21,7 +21,9 @@ var DeviceType = mongoose.model('device_types', {
 /* MongoDB Products' Model's model */
 var ProductModel = mongoose.model('product_models', {
   id_product_models : String,
-  name : String
+  name : String,
+  stock : String,
+  sells: String,
 });
 
 /* MongoDB Usage's model */

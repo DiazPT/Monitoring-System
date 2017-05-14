@@ -25,143 +25,168 @@ app.post('/api/device/add', function (req, res) {
 
             models.Device.findOne({name: req.body.device_name}, function (err, device) {
 
-                if (device === null) {
+                models.ProductModel.findOne({name: req.body.device_model}, function (err, stock) {
+                    if(stock.stock != '0'){
+                        stock.stock = parseInt(stock.stock) -1;
+                        stock.sells = parseInt(stock.sells) +1;
+                        stock.save(function (err) {
+                            if (err) {
+                                console.error("Error on saving stock");
+                                console.error(err); // log error to Terminal
 
-                    var newRecord = new models.Device({
-                        name: req.body.device_name,
-                        current_state: 'on',
-                        model: req.body.device_model,
-                        device_type: req.body.device_type,
-                        producer: req.body.producer,
-                        date_registered: moment().locale('pt').format('l') + '    ' + moment().locale('pt').format('LT'),
-                        user: req.body.username,
-                        usage_history: ''
-                    });
+                            } else {
+                                console.log("Stock updated");
+                                //recordCreated(newRecord);
 
+                            }
 
-                    newRecord.usage_history.set(newRecord.usage_history.length - 1, 'Registered on the website - ' + moment().locale('pt').format('l') + '    ' + moment().locale('pt').format('LT'));
-                    User.devices.set(User.devices.length, req.body.device_name);
+                        });
+                        if (device === null) {
 
-                    console.log(User);
-
-                    User.save(function (err) {
-                        if (err) {
-                            console.error("Error on saving new record");
-                            console.error(err); // log error to Terminal
-                        }
-                        else {
-                            console.log("User updated");
-                        }
-                    });
-
-                    newRecord.save(function (err) {
-                        if (err) {
-                            console.error("Error on saving new record");
-                            console.error(err); // log error to Terminal
-
-
-                        } else {
-                            console.log("Created a new record!");
-                            //recordCreated(newRecord);
-
-                            models.Device.findOne({
+                            var newRecord = new models.Device({
                                 name: req.body.device_name,
-                                user: req.body.username
-                            }, function (err, device) {
-
-                                models.Producer.findOne({name: req.body.producer}, function (err, producer_device) {
-
-
-                                    if (producer_device.device_types.indexOf(req.body.device_type) == -1)
-                                        producer_device.device_types.set(producer_device.device_types.length, req.body.device_type);
-                                    if (producer_device.device_models.indexOf(req.body.device_model) == -1)
-                                        producer_device.device_models.set(producer_device.device_models.length, req.body.device_model);
-                                    if (producer_device.devices.indexOf(req.body.device_name) == -1)
-                                        producer_device.devices.set(producer_device.devices.length, req.body.device_name);
-
-                                    producer_device.save(function (err) {
-                                        if (err) {
-                                            console.error("Error on updating producer");
-                                            console.error(err); // log error to Terminal
-
-                                        } else {
-                                            console.log("Producer updated");
-                                            //recordCreated(newRecord);
-
-                                        }
-                                    });
-
-                                });
-
-
-                                fetch('http://localhost:8182/api/device/add', {
-                                    method: 'POST',
-                                    headers: {
-                                        'Content-Type': 'application/x-www-form-urlencoded'
-                                    },
-                                    body: '_id=' + device._id + '&current_state=on' + '&device_name=' + req.body.device_name,
-                                })
-                                    .then(response => response.json())
-                                    .then(json => {
-                                        /*if(json.message === 'result, 0'){
-
-                                         }
-                                         else{
-
-                                         }*/
-                                        if (json.result === '0') {
-                                            console.log("device added");
-                                            res.json({
-                                                message: 'device added'
-                                            });
-
-                                            //moment.locale('pt');
-
-                                            var newActivity = new models.User_history({
-                                                username: req.body.username,
-                                                activity: 'Added the device: ' + req.body.device_name,
-                                                time: moment().locale('pt').format('l') + '    ' + moment().locale('pt').format('LT'),
-                                            });
-
-                                            newActivity.save(function (err) {
-                                                if (err) {
-                                                    console.error("Error on saving activity");
-                                                    console.error(err); // log error to Terminal
-
-                                                } else {
-                                                    console.log("History updated");
-                                                    //recordCreated(newRecord);
-
-                                                }
-
-                                            });
-
-
-                                        }
-                                        else {
-                                            res.json({
-                                                message: 'device not added'
-                                            })
-                                        }
-                                    }).catch(error => {
-                                    console.error(error);
-                                });
-
-
+                                current_state: 'on',
+                                model: req.body.device_model,
+                                device_type: req.body.device_type,
+                                producer: req.body.producer,
+                                date_registered: moment().locale('pt').format('l') + '    ' + moment().locale('pt').format('LT'),
+                                user: req.body.username,
+                                usage_history: ''
                             });
 
 
+                            newRecord.usage_history.set(newRecord.usage_history.length - 1, 'Registered on the website - ' + moment().locale('pt').format('l') + '    ' + moment().locale('pt').format('LT'));
+                            User.devices.set(User.devices.length, req.body.device_name);
+
+                            console.log(User);
+
+                            User.save(function (err) {
+                                if (err) {
+                                    console.error("Error on saving new record");
+                                    console.error(err); // log error to Terminal
+                                }
+                                else {
+                                    console.log("User updated");
+                                }
+                            });
+
+                            newRecord.save(function (err) {
+                                if (err) {
+                                    console.error("Error on saving new record");
+                                    console.error(err); // log error to Terminal
+
+
+                                } else {
+                                    console.log("Created a new record!");
+                                    //recordCreated(newRecord);
+
+                                    models.Device.findOne({
+                                        name: req.body.device_name,
+                                        user: req.body.username
+                                    }, function (err, device) {
+
+                                        models.Producer.findOne({name: req.body.producer}, function (err, producer_device) {
+
+
+                                            if (producer_device.device_types.indexOf(req.body.device_type) == -1)
+                                                producer_device.device_types.set(producer_device.device_types.length, req.body.device_type);
+                                            if (producer_device.device_models.indexOf(req.body.device_model) == -1)
+                                                producer_device.device_models.set(producer_device.device_models.length, req.body.device_model);
+                                            if (producer_device.devices.indexOf(req.body.device_name) == -1)
+                                                producer_device.devices.set(producer_device.devices.length, req.body.device_name);
+
+                                            producer_device.save(function (err) {
+                                                if (err) {
+                                                    console.error("Error on updating producer");
+                                                    console.error(err); // log error to Terminal
+
+                                                } else {
+                                                    console.log("Producer updated");
+                                                    //recordCreated(newRecord);
+
+                                                }
+                                            });
+
+                                        });
+
+
+                                        fetch('http://localhost:8182/api/device/add', {
+                                            method: 'POST',
+                                            headers: {
+                                                'Content-Type': 'application/x-www-form-urlencoded'
+                                            },
+                                            body: '_id=' + device._id + '&current_state=on' + '&device_name=' + req.body.device_name,
+                                        })
+                                            .then(response => response.json())
+                                            .then(json => {
+                                                /*if(json.message === 'result, 0'){
+
+                                                 }
+                                                 else{
+
+                                                 }*/
+                                                if (json.result === '0') {
+                                                    console.log("device added");
+                                                    res.json({
+                                                        message: 'device added'
+                                                    });
+
+                                                    //moment.locale('pt');
+
+                                                    var newActivity = new models.User_history({
+                                                        username: req.body.username,
+                                                        activity: 'Added the device: ' + req.body.device_name,
+                                                        time: moment().locale('pt').format('l') + '    ' + moment().locale('pt').format('LT'),
+                                                    });
+
+                                                    newActivity.save(function (err) {
+                                                        if (err) {
+                                                            console.error("Error on saving activity");
+                                                            console.error(err); // log error to Terminal
+
+                                                        } else {
+                                                            console.log("History updated");
+                                                            //recordCreated(newRecord);
+
+                                                        }
+
+                                                    });
+
+
+                                                }
+                                                else {
+                                                    res.json({
+                                                        message: 'device not added'
+                                                    })
+                                                }
+                                            }).catch(error => {
+                                            console.error(error);
+                                        });
+
+
+                                    });
+
+
+                                }
+                            });
+
                         }
-                    });
 
-                }
+                        else {
+                            res.json({
+                                message: 'Device already added'
+                            })
 
-                else {
-                    res.json({
-                        message: 'Device already added'
-                    })
+                        }
+                    }
+                    else{
+                        res.json({
+                            message: 'Device not on stock'
+                        })
+                    }
+                });
 
-                }
+
 
 
             });

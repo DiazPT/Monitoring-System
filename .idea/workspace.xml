@@ -15,23 +15,11 @@
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="index.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/backend/index.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="187">
-              <caret line="143" column="16" lean-forward="false" selection-start-line="143" selection-start-column="16" selection-end-line="160" selection-end-column="19" />
-              <folding>
-                <element signature="e#6080#6125#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Producer.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Producer.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/frontend/src/Producer/Producer.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="451">
-              <caret line="1154" column="28" lean-forward="false" selection-start-line="1154" selection-start-column="28" selection-end-line="1154" selection-end-column="28" />
+            <state relative-caret-position="307">
+              <caret line="75" column="0" lean-forward="false" selection-start-line="75" selection-start-column="0" selection-end-line="78" selection-end-column="2" />
               <folding>
                 <element signature="e#702#752#0" expanded="true" />
                 <element signature="n#!!block;n#handleClick_model_add#0;n#MenuProducer#0" expanded="false" />
@@ -40,31 +28,36 @@
                 <element signature="n#!!block;n#handleClick_type_remove#0;n#MenuProducer#0" expanded="false" />
                 <element signature="n#!!block;n#handleClick_user_history#0;n#MenuProducer#0" expanded="false" />
                 <element signature="n#!!block;n#handleClick_type_history#0;n#MenuProducer#0" expanded="false" />
+                <element signature="n#!!block;n#handleClick_device_history#0;n#MenuProducer#0" expanded="false" />
+                <element signature="n#!!block;n#handleClick_device_model_history#0;n#MenuProducer#0" expanded="false" />
                 <element signature="n#!!block;n#rowGetter_user#0;n#MenuProducer#0" expanded="false" />
                 <element signature="n#!!block;n#rowGetter_type#0;n#MenuProducer#0" expanded="false" />
                 <element signature="n#!!block;n#rowGetter_device#0;n#MenuProducer#0" expanded="false" />
+                <element signature="n#!!block;n#rowGetter_model#0;n#MenuProducer#0" expanded="false" />
                 <element signature="n#!!block;n#api_producer_product_model_add#0;n#MenuProducer#0" expanded="false" />
-                <element signature="n#!!block;n#api_producer_product_model_remove#0;n#MenuProducer#0" expanded="false" />
+                <element signature="n#!!block;n#api_producer_device_model_history#0;n#MenuProducer#0" expanded="false" />
                 <element signature="n#!!block;n#api_producer_device_type_add#0;n#MenuProducer#0" expanded="false" />
                 <element signature="n#!!block;n#api_producer_device_type_remove#0;n#MenuProducer#0" expanded="false" />
                 <element signature="n#!!block;n#api_producer_device_type_history#0;n#MenuProducer#0" expanded="false" />
                 <element signature="n#!!block;n#api_device_history#0;n#MenuProducer#0" expanded="false" />
                 <element signature="n#!!block;n#api_user_history#0;n#MenuProducer#0" expanded="false" />
+                <element signature="n#!!block;n#api_producerlogout#0;n#MenuProducer#0" expanded="false" />
                 <element signature="n#!!block;n#onChangecombobox_device#0;n#MenuProducer#0" expanded="false" />
                 <element signature="n#!!block;n#onChangecombobox_user#0;n#MenuProducer#0" expanded="false" />
                 <element signature="n#!!block;n#onChangecombobox_model#0;n#MenuProducer#0" expanded="false" />
                 <element signature="n#!!block;n#onChangecombobox_type#0;n#MenuProducer#0" expanded="false" />
                 <element signature="n#!!block;n#api_init#0;n#MenuProducer#0" expanded="false" />
-                <element signature="e#23432#24719#0" expanded="false" />
-                <element signature="e#24762#26528#0" expanded="false" />
-                <element signature="e#26571#27856#0" expanded="false" />
-                <element signature="e#27899#29584#0" expanded="false" />
-                <element signature="e#29627#31323#0" expanded="false" />
-                <element signature="e#31366#33062#0" expanded="false" />
-                <element signature="e#33105#34630#0" expanded="false" />
-                <element signature="e#34672#36052#0" expanded="false" />
-                <element signature="e#36095#37798#0" expanded="false" />
-                <element signature="e#37842#39364#0" expanded="false" />
+                <element signature="e#29573#31339#0" expanded="false" />
+                <element signature="e#31382#32667#0" expanded="false" />
+                <element signature="e#32710#34395#0" expanded="false" />
+                <element signature="e#34438#36134#0" expanded="false" />
+                <element signature="e#36177#37873#0" expanded="false" />
+                <element signature="e#37916#39442#0" expanded="false" />
+                <element signature="e#39485#40998#0" expanded="false" />
+                <element signature="e#41041#42744#0" expanded="false" />
+                <element signature="e#42788#44311#0" expanded="false" />
+                <element signature="e#44355#46072#0" expanded="false" />
+                <element signature="e#46116#47638#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -73,22 +66,25 @@
       <file leaf-file-name="index.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/backend/producer/index.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="104">
-              <caret line="353" column="60" lean-forward="false" selection-start-line="353" selection-start-column="60" selection-end-line="353" selection-end-column="60" />
+            <state relative-caret-position="703">
+              <caret line="771" column="18" lean-forward="false" selection-start-line="771" selection-start-column="18" selection-end-line="771" selection-end-column="18" />
               <folding>
                 <element signature="e#660#3210#0" expanded="false" />
-                <element signature="e#3308#4626#0" expanded="false" />
-                <element signature="e#4720#6027#0" expanded="false" />
-                <element signature="e#6127#7435#0" expanded="false" />
-                <element signature="e#7532#8832#0" expanded="false" />
-                <element signature="e#8953#10729#0" expanded="false" />
-                <element signature="e#12256#13237#0" expanded="false" />
-                <element signature="e#13306#14271#0" expanded="false" />
-                <element signature="e#14335#15313#0" expanded="false" />
-                <element signature="e#15377#16514#0" expanded="false" />
-                <element signature="e#16574#17747#0" expanded="false" />
-                <element signature="e#17813#19412#0" expanded="false" />
-                <element signature="e#19478#21073#0" expanded="false" />
+                <element signature="e#3308#5479#0" expanded="false" />
+                <element signature="e#5573#6880#0" expanded="false" />
+                <element signature="e#6980#8288#0" expanded="false" />
+                <element signature="e#8385#9685#0" expanded="false" />
+                <element signature="e#9806#11582#0" expanded="false" />
+                <element signature="e#11652#12739#0" expanded="false" />
+                <element signature="e#12813#14203#0" expanded="false" />
+                <element signature="e#14267#15248#0" expanded="false" />
+                <element signature="e#15316#16297#0" expanded="false" />
+                <element signature="e#16366#17331#0" expanded="false" />
+                <element signature="e#17395#18373#0" expanded="false" />
+                <element signature="e#18437#19574#0" expanded="false" />
+                <element signature="e#19634#20807#0" expanded="false" />
+                <element signature="e#20873#22472#0" expanded="false" />
+                <element signature="e#22538#24133#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -104,11 +100,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="user.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="user.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/frontend/src/User/user.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="259">
-              <caret line="750" column="110" lean-forward="false" selection-start-line="750" selection-start-column="53" selection-end-line="750" selection-end-column="110" />
+            <state relative-caret-position="323">
+              <caret line="538" column="27" lean-forward="false" selection-start-line="538" selection-start-column="27" selection-end-line="538" selection-end-column="27" />
               <folding>
                 <element signature="e#0#50#0" expanded="true" />
                 <element signature="n#!!block;n#rowGetter#0;n#Menu#0" expanded="false" />
@@ -118,17 +114,19 @@
                 <element signature="n#!!block;n#onChangecombobox_type#0;n#Menu#0" expanded="false" />
                 <element signature="n#!!block;n#onChangecombobox_model#0;n#Menu#0" expanded="false" />
                 <element signature="n#!!block;n#api_device_history#0;n#Menu#0" expanded="false" />
-                <element signature="e#11088#11225#0" expanded="false" />
+                <element signature="n#!!block;n#api_device_add#0;n#Menu#0" expanded="false" />
+                <element signature="e#11156#11293#0" expanded="false" />
                 <element signature="n#!!block;n#api_device_remove#0;n#Menu#0" expanded="false" />
                 <element signature="n#!!block;n#api_device_state#0;n#Menu#0" expanded="false" />
                 <element signature="n#!!block;n#api_device_monitor#0;n#Menu#0" expanded="false" />
                 <element signature="n#!!block;n#handleClickRegisterDevice#0;n#Menu#0" expanded="false" />
                 <element signature="n#!!block;n#handleClickRemoveDevice#0;n#Menu#0" expanded="false" />
                 <element signature="n#!!block;n#handleClickState#0;n#Menu#0" expanded="false" />
-                <element signature="e#18993#22511#0" expanded="false" />
-                <element signature="e#22554#24216#0" expanded="false" />
-                <element signature="e#25791#27627#0" expanded="false" />
-                <element signature="e#27670#29190#0" expanded="false" />
+                <element signature="e#19712#23230#0" expanded="false" />
+                <element signature="e#23273#24935#0" expanded="false" />
+                <element signature="e#24978#26467#0" expanded="false" />
+                <element signature="e#26510#28346#0" expanded="false" />
+                <element signature="e#28389#29909#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -147,8 +145,8 @@
       <file leaf-file-name="models.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/backend/database/models.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="374">
-              <caret line="55" column="9" lean-forward="false" selection-start-line="55" selection-start-column="2" selection-end-line="55" selection-end-column="9" />
+            <state relative-caret-position="800">
+              <caret line="83" column="16" lean-forward="false" selection-start-line="83" selection-start-column="4" selection-end-line="83" selection-end-column="16" />
               <folding />
             </state>
           </provider>
@@ -167,15 +165,26 @@
       <file leaf-file-name="index.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/backend/device/index.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="446">
-              <caret line="594" column="88" lean-forward="false" selection-start-line="594" selection-start-column="88" selection-end-line="594" selection-end-column="88" />
+            <state relative-caret-position="482">
+              <caret line="152" column="55" lean-forward="false" selection-start-line="135" selection-start-column="52" selection-end-line="152" selection-end-column="55" />
               <folding>
-                <element signature="e#328#7240#0" expanded="false" />
-                <element signature="e#7319#11085#0" expanded="false" />
-                <element signature="e#11167#11968#0" expanded="false" />
-                <element signature="e#12066#13689#0" expanded="false" />
-                <element signature="e#13751#16198#0" expanded="false" />
+                <element signature="e#9079#12845#0" expanded="false" />
+                <element signature="e#12927#13728#0" expanded="false" />
+                <element signature="e#13826#15449#0" expanded="false" />
+                <element signature="e#15511#17958#0" expanded="false" />
+                <element signature="e#18049#22604#0" expanded="false" />
+                <element signature="e#22683#25047#0" expanded="false" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="manager.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/backend/device/manager.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="402">
+              <caret line="26" column="0" lean-forward="false" selection-start-line="26" selection-start-column="0" selection-end-line="26" selection-end-column="0" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -183,10 +192,11 @@
       <file leaf-file-name="index.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/backend/user/index.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="155">
-              <caret line="119" column="30" lean-forward="false" selection-start-line="119" selection-start-column="30" selection-end-line="119" selection-end-column="30" />
+            <state relative-caret-position="232">
+              <caret line="155" column="37" lean-forward="false" selection-start-line="155" selection-start-column="37" selection-end-line="155" selection-end-column="37" />
               <folding>
                 <element signature="e#635#3204#0" expanded="false" />
+                <element signature="e#3289#4736#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -204,17 +214,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>token</find>
-      <find>device.findo</find>
-      <find>sock</find>
-      <find>momen</find>
-      <find>new</find>
-      <find>handleClick</find>
-      <find>device</find>
-      <find>device_com</find>
-      <find>io</find>
-      <find>console.log</find>
-      <find>conso</find>
       <find>asyn</find>
       <find>combo</find>
       <find>dis</find>
@@ -227,13 +226,24 @@
       <find>asyx</find>
       <find>push</find>
       <find>device add</find>
-      <find>time</find>
-      <find>set</find>
       <find>value_device</find>
       <find>state</find>
       <find>registered</find>
-      <find>niti</find>
       <find>Consult a device\'s history.</find>
+      <find>/api/producer/productmodel/add</find>
+      <find>niti</find>
+      <find>newRe</find>
+      <find>find(</find>
+      <find>set</find>
+      <find>handleClick_device_model_history</find>
+      <find>device_combobox_hist</find>
+      <find>/api/producer/device/models</find>
+      <find>api_producer_device_model_history</find>
+      <find>/api/producer/device/models/all</find>
+      <find>windo</find>
+      <find>user</find>
+      <find>User_history</find>
+      <find>time</find>
     </findStrings>
     <dirStrings>
       <dir>C:\IS\IS_trab2\Monitoring System\frontend</dir>
@@ -289,13 +299,13 @@
         <option value="$PROJECT_DIR$/frontend/src/Login/Login.js" />
         <option value="$PROJECT_DIR$/backend/index.js" />
         <option value="$PROJECT_DIR$/backend/device/manager.js" />
+        <option value="$PROJECT_DIR$/frontend/public/index.html" />
+        <option value="$PROJECT_DIR$/backend/device/index.js" />
         <option value="$PROJECT_DIR$/backend/database/models.js" />
+        <option value="$PROJECT_DIR$/backend/producer/index.js" />
+        <option value="$PROJECT_DIR$/frontend/src/Producer/Producer.js" />
         <option value="$PROJECT_DIR$/backend/user/index.js" />
         <option value="$PROJECT_DIR$/frontend/src/User/user.js" />
-        <option value="$PROJECT_DIR$/backend/device/index.js" />
-        <option value="$PROJECT_DIR$/backend/producer/index.js" />
-        <option value="$PROJECT_DIR$/frontend/public/index.html" />
-        <option value="$PROJECT_DIR$/frontend/src/Producer/Producer.js" />
       </list>
     </option>
   </component>
@@ -684,12 +694,12 @@
       <workItem from="1494514179840" duration="5208000" />
       <workItem from="1494580077159" duration="36681000" />
       <workItem from="1494668413981" duration="53026000" />
-      <workItem from="1494765121758" duration="24874000" />
+      <workItem from="1494765121758" duration="32767000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="257990000" />
+    <option name="totallyTimeSpent" value="265883000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
@@ -746,7 +756,7 @@
           <option name="timeStamp" value="4" />
         </line-breakpoint>
       </breakpoints>
-      <option name="time" value="41" />
+      <option name="time" value="46" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -939,14 +949,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/backend/device/manager.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="442">
-          <caret line="26" column="0" lean-forward="false" selection-start-line="26" selection-start-column="0" selection-end-line="26" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/frontend/src/Producer/item.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="306">
@@ -965,101 +967,11 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/backend/database/index.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="85">
-          <caret line="5" column="70" lean-forward="false" selection-start-line="5" selection-start-column="34" selection-end-line="5" selection-end-column="70" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/frontend/src/User/user.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="259">
-          <caret line="750" column="110" lean-forward="false" selection-start-line="750" selection-start-column="53" selection-end-line="750" selection-end-column="110" />
-          <folding>
-            <element signature="e#0#50#0" expanded="true" />
-            <element signature="n#!!block;n#rowGetter#0;n#Menu#0" expanded="false" />
-            <element signature="n#!!block;n#api_init#0;n#Menu#0" expanded="false" />
-            <element signature="n#!!block;n#onChangecombobox#0;n#Menu#0" expanded="false" />
-            <element signature="n#!!block;n#onChangecombobox_producer#0;n#Menu#0" expanded="false" />
-            <element signature="n#!!block;n#onChangecombobox_type#0;n#Menu#0" expanded="false" />
-            <element signature="n#!!block;n#onChangecombobox_model#0;n#Menu#0" expanded="false" />
-            <element signature="n#!!block;n#api_device_history#0;n#Menu#0" expanded="false" />
-            <element signature="e#11088#11225#0" expanded="false" />
-            <element signature="n#!!block;n#api_device_remove#0;n#Menu#0" expanded="false" />
-            <element signature="n#!!block;n#api_device_state#0;n#Menu#0" expanded="false" />
-            <element signature="n#!!block;n#api_device_monitor#0;n#Menu#0" expanded="false" />
-            <element signature="n#!!block;n#handleClickRegisterDevice#0;n#Menu#0" expanded="false" />
-            <element signature="n#!!block;n#handleClickRemoveDevice#0;n#Menu#0" expanded="false" />
-            <element signature="n#!!block;n#handleClickState#0;n#Menu#0" expanded="false" />
-            <element signature="e#18993#22511#0" expanded="false" />
-            <element signature="e#22554#24216#0" expanded="false" />
-            <element signature="e#25791#27627#0" expanded="false" />
-            <element signature="e#27670#29190#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/backend/database/models.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="374">
-          <caret line="55" column="9" lean-forward="false" selection-start-line="55" selection-start-column="2" selection-end-line="55" selection-end-column="9" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/backend/user/index.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="155">
-          <caret line="119" column="30" lean-forward="false" selection-start-line="119" selection-start-column="30" selection-end-line="119" selection-end-column="30" />
-          <folding>
-            <element signature="e#635#3204#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/frontend/src/Login/Login.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="79">
           <caret line="79" column="58" lean-forward="false" selection-start-line="79" selection-start-column="58" selection-end-line="79" selection-end-column="58" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/backend/device/index.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="446">
-          <caret line="594" column="88" lean-forward="false" selection-start-line="594" selection-start-column="88" selection-end-line="594" selection-end-column="88" />
-          <folding>
-            <element signature="e#328#7240#0" expanded="false" />
-            <element signature="e#7319#11085#0" expanded="false" />
-            <element signature="e#11167#11968#0" expanded="false" />
-            <element signature="e#12066#13689#0" expanded="false" />
-            <element signature="e#13751#16198#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/backend/producer/index.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="104">
-          <caret line="353" column="60" lean-forward="false" selection-start-line="353" selection-start-column="60" selection-end-line="353" selection-end-column="60" />
-          <folding>
-            <element signature="e#660#3210#0" expanded="false" />
-            <element signature="e#3308#4626#0" expanded="false" />
-            <element signature="e#4720#6027#0" expanded="false" />
-            <element signature="e#6127#7435#0" expanded="false" />
-            <element signature="e#7532#8832#0" expanded="false" />
-            <element signature="e#8953#10729#0" expanded="false" />
-            <element signature="e#12256#13237#0" expanded="false" />
-            <element signature="e#13306#14271#0" expanded="false" />
-            <element signature="e#14335#15313#0" expanded="false" />
-            <element signature="e#15377#16514#0" expanded="false" />
-            <element signature="e#16574#17747#0" expanded="false" />
-            <element signature="e#17813#19412#0" expanded="false" />
-            <element signature="e#19478#21073#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1071,10 +983,74 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/backend/device/manager.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="402">
+          <caret line="26" column="0" lean-forward="false" selection-start-line="26" selection-start-column="0" selection-end-line="26" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/backend/database/index.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="85">
+          <caret line="5" column="70" lean-forward="false" selection-start-line="5" selection-start-column="34" selection-end-line="5" selection-end-column="70" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/backend/producer/index.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="703">
+          <caret line="771" column="18" lean-forward="false" selection-start-line="771" selection-start-column="18" selection-end-line="771" selection-end-column="18" />
+          <folding>
+            <element signature="e#660#3210#0" expanded="false" />
+            <element signature="e#3308#5479#0" expanded="false" />
+            <element signature="e#5573#6880#0" expanded="false" />
+            <element signature="e#6980#8288#0" expanded="false" />
+            <element signature="e#8385#9685#0" expanded="false" />
+            <element signature="e#9806#11582#0" expanded="false" />
+            <element signature="e#11652#12739#0" expanded="false" />
+            <element signature="e#12813#14203#0" expanded="false" />
+            <element signature="e#14267#15248#0" expanded="false" />
+            <element signature="e#15316#16297#0" expanded="false" />
+            <element signature="e#16366#17331#0" expanded="false" />
+            <element signature="e#17395#18373#0" expanded="false" />
+            <element signature="e#18437#19574#0" expanded="false" />
+            <element signature="e#19634#20807#0" expanded="false" />
+            <element signature="e#20873#22472#0" expanded="false" />
+            <element signature="e#22538#24133#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/backend/database/models.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="800">
+          <caret line="83" column="16" lean-forward="false" selection-start-line="83" selection-start-column="4" selection-end-line="83" selection-end-column="16" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/backend/device/index.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="482">
+          <caret line="152" column="55" lean-forward="false" selection-start-line="135" selection-start-column="52" selection-end-line="152" selection-end-column="55" />
+          <folding>
+            <element signature="e#9079#12845#0" expanded="false" />
+            <element signature="e#12927#13728#0" expanded="false" />
+            <element signature="e#13826#15449#0" expanded="false" />
+            <element signature="e#15511#17958#0" expanded="false" />
+            <element signature="e#18049#22604#0" expanded="false" />
+            <element signature="e#22683#25047#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/frontend/src/Producer/Producer.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="451">
-          <caret line="1154" column="28" lean-forward="false" selection-start-line="1154" selection-start-column="28" selection-end-line="1154" selection-end-column="28" />
+        <state relative-caret-position="307">
+          <caret line="75" column="0" lean-forward="false" selection-start-line="75" selection-start-column="0" selection-end-line="78" selection-end-column="2" />
           <folding>
             <element signature="e#702#752#0" expanded="true" />
             <element signature="n#!!block;n#handleClick_model_add#0;n#MenuProducer#0" expanded="false" />
@@ -1083,31 +1059,77 @@
             <element signature="n#!!block;n#handleClick_type_remove#0;n#MenuProducer#0" expanded="false" />
             <element signature="n#!!block;n#handleClick_user_history#0;n#MenuProducer#0" expanded="false" />
             <element signature="n#!!block;n#handleClick_type_history#0;n#MenuProducer#0" expanded="false" />
+            <element signature="n#!!block;n#handleClick_device_history#0;n#MenuProducer#0" expanded="false" />
+            <element signature="n#!!block;n#handleClick_device_model_history#0;n#MenuProducer#0" expanded="false" />
             <element signature="n#!!block;n#rowGetter_user#0;n#MenuProducer#0" expanded="false" />
             <element signature="n#!!block;n#rowGetter_type#0;n#MenuProducer#0" expanded="false" />
             <element signature="n#!!block;n#rowGetter_device#0;n#MenuProducer#0" expanded="false" />
+            <element signature="n#!!block;n#rowGetter_model#0;n#MenuProducer#0" expanded="false" />
             <element signature="n#!!block;n#api_producer_product_model_add#0;n#MenuProducer#0" expanded="false" />
-            <element signature="n#!!block;n#api_producer_product_model_remove#0;n#MenuProducer#0" expanded="false" />
+            <element signature="n#!!block;n#api_producer_device_model_history#0;n#MenuProducer#0" expanded="false" />
             <element signature="n#!!block;n#api_producer_device_type_add#0;n#MenuProducer#0" expanded="false" />
             <element signature="n#!!block;n#api_producer_device_type_remove#0;n#MenuProducer#0" expanded="false" />
             <element signature="n#!!block;n#api_producer_device_type_history#0;n#MenuProducer#0" expanded="false" />
             <element signature="n#!!block;n#api_device_history#0;n#MenuProducer#0" expanded="false" />
             <element signature="n#!!block;n#api_user_history#0;n#MenuProducer#0" expanded="false" />
+            <element signature="n#!!block;n#api_producerlogout#0;n#MenuProducer#0" expanded="false" />
             <element signature="n#!!block;n#onChangecombobox_device#0;n#MenuProducer#0" expanded="false" />
             <element signature="n#!!block;n#onChangecombobox_user#0;n#MenuProducer#0" expanded="false" />
             <element signature="n#!!block;n#onChangecombobox_model#0;n#MenuProducer#0" expanded="false" />
             <element signature="n#!!block;n#onChangecombobox_type#0;n#MenuProducer#0" expanded="false" />
             <element signature="n#!!block;n#api_init#0;n#MenuProducer#0" expanded="false" />
-            <element signature="e#23432#24719#0" expanded="false" />
-            <element signature="e#24762#26528#0" expanded="false" />
-            <element signature="e#26571#27856#0" expanded="false" />
-            <element signature="e#27899#29584#0" expanded="false" />
-            <element signature="e#29627#31323#0" expanded="false" />
-            <element signature="e#31366#33062#0" expanded="false" />
-            <element signature="e#33105#34630#0" expanded="false" />
-            <element signature="e#34672#36052#0" expanded="false" />
-            <element signature="e#36095#37798#0" expanded="false" />
-            <element signature="e#37842#39364#0" expanded="false" />
+            <element signature="e#29573#31339#0" expanded="false" />
+            <element signature="e#31382#32667#0" expanded="false" />
+            <element signature="e#32710#34395#0" expanded="false" />
+            <element signature="e#34438#36134#0" expanded="false" />
+            <element signature="e#36177#37873#0" expanded="false" />
+            <element signature="e#37916#39442#0" expanded="false" />
+            <element signature="e#39485#40998#0" expanded="false" />
+            <element signature="e#41041#42744#0" expanded="false" />
+            <element signature="e#42788#44311#0" expanded="false" />
+            <element signature="e#44355#46072#0" expanded="false" />
+            <element signature="e#46116#47638#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/backend/user/index.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="232">
+          <caret line="155" column="37" lean-forward="false" selection-start-line="155" selection-start-column="37" selection-end-line="155" selection-end-column="37" />
+          <folding>
+            <element signature="e#635#3204#0" expanded="false" />
+            <element signature="e#3289#4736#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/frontend/src/User/user.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="323">
+          <caret line="538" column="27" lean-forward="false" selection-start-line="538" selection-start-column="27" selection-end-line="538" selection-end-column="27" />
+          <folding>
+            <element signature="e#0#50#0" expanded="true" />
+            <element signature="n#!!block;n#rowGetter#0;n#Menu#0" expanded="false" />
+            <element signature="n#!!block;n#api_init#0;n#Menu#0" expanded="false" />
+            <element signature="n#!!block;n#onChangecombobox#0;n#Menu#0" expanded="false" />
+            <element signature="n#!!block;n#onChangecombobox_producer#0;n#Menu#0" expanded="false" />
+            <element signature="n#!!block;n#onChangecombobox_type#0;n#Menu#0" expanded="false" />
+            <element signature="n#!!block;n#onChangecombobox_model#0;n#Menu#0" expanded="false" />
+            <element signature="n#!!block;n#api_device_history#0;n#Menu#0" expanded="false" />
+            <element signature="n#!!block;n#api_device_add#0;n#Menu#0" expanded="false" />
+            <element signature="e#11156#11293#0" expanded="false" />
+            <element signature="n#!!block;n#api_device_remove#0;n#Menu#0" expanded="false" />
+            <element signature="n#!!block;n#api_device_state#0;n#Menu#0" expanded="false" />
+            <element signature="n#!!block;n#api_device_monitor#0;n#Menu#0" expanded="false" />
+            <element signature="n#!!block;n#handleClickRegisterDevice#0;n#Menu#0" expanded="false" />
+            <element signature="n#!!block;n#handleClickRemoveDevice#0;n#Menu#0" expanded="false" />
+            <element signature="n#!!block;n#handleClickState#0;n#Menu#0" expanded="false" />
+            <element signature="e#19712#23230#0" expanded="false" />
+            <element signature="e#23273#24935#0" expanded="false" />
+            <element signature="e#24978#26467#0" expanded="false" />
+            <element signature="e#26510#28346#0" expanded="false" />
+            <element signature="e#28389#29909#0" expanded="false" />
           </folding>
         </state>
       </provider>

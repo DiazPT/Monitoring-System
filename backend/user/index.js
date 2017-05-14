@@ -114,13 +114,12 @@ app.post('/api/user/history', function (req, res) {
                     message: 'Invalid session'
                 })
             }
-            else{
-                console.log("olaaa");
-                var p=0;
-                models.User_history.find({}, function(err, users) {
+            else {
+                var p = 0;
+                models.User_history.find({}, function (err, users) {
 
-                    users.forEach(function(user) {
-                        if(user.username === req.body.value_user){
+                    users.forEach(function (user) {
+                        if (user.username === req.body.value_user) {
                             all_devices.push({
                                 id: p,
                                 username: user.username,
@@ -131,7 +130,6 @@ app.post('/api/user/history', function (req, res) {
                         }
 
                     });
-
 
 
                 });
@@ -147,8 +145,42 @@ app.post('/api/user/history', function (req, res) {
         }
 
 
-
     });
+});
+
+app.post('/api/user/logout', function (req, res) {
+    res.header("Access-Control-Allow-Origin", "*");
+    console.log('[User API] User\'s logout.');
+                console.log("aquiiii");
+                var newActivity = new models.User_history({
+                    username: req.body.username,
+                    activity: 'Logout from the website',
+                    time: moment().locale('pt').format('l') + '    ' + moment().locale('pt').format('LT'),
+                });
+
+                newActivity.save(function (err) {
+                    if (err) {
+                        console.error("Error on saving activity");
+                        console.error(err); // log error to Terminal
+
+                    } else {
+                        console.log("History updated");
+                        //recordCreated(newRecord);
+
+                    }
+
+                });
+
+                res.json({
+                    message: 'ok',
+                });
+
+
+
+
+
+
+
 });
 
 

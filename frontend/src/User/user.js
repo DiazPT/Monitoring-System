@@ -44,6 +44,11 @@ const style_div = {
     marginLeft: 80,
 }
 
+const logoutstyle = {
+    marginLeft: 500,
+    marginTop: -2000
+};
+
 let rows = [];
 let rows_values = [];
 let rows_values_history = [];
@@ -522,6 +527,29 @@ class Menu extends Component {
         }
     }
 
+    api_user_logout(){
+        fetch('http://localhost:3000/api/user/logout', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: 'username=' + this.state.username + '&token=' + this.state.token
+        })
+            .then(response => response.json())
+            .then(json => {
+                if (json.message === 'ok') {
+
+                }
+                else {
+                    alert("Problem logout");
+
+                }
+            }).catch(error => {
+            console.error(error);
+        });
+        window.location = "./";
+    }
+
 
     handleClickRegisterDevice() {
 
@@ -912,6 +940,10 @@ class Menu extends Component {
                             className="fa fa-list-alt fa-2x"/></div>
 
                     </MotionMenu>
+                    <MuiThemeProvider>
+                        <RaisedButton label="Logout" primary={true} style={logoutstyle}
+                                      onClick={(event) => this.api_user_logout()}/>
+                    </MuiThemeProvider>
                 </div>
             </div>
         );
