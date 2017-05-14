@@ -68,11 +68,11 @@ class Login extends Component {
                     //State.username=this.state.username;
                     //State.password=this.state.password;
 
-                    var io = require('socket.io-client');
+                    /*var io = require('socket.io-client');
                     var socket = io.connect('http://localhost:3000');
                     socket.on('connect', () => {
                         alert("Successfully connected!");
-                    });
+                    });*/
                     //socket.emit('connected');
                     //io.on('connection', function(client){});
                     //io.listen(3000);
@@ -104,9 +104,13 @@ class Login extends Component {
                     //history.push('/producer');
                     //window.location = "/producer";
                     this.state.token= json.token;
+                    localStorage.setItem('token',this.state.token);
+                    localStorage.setItem('username',this.state.username);
                     
-                    alert('producer');
+                    alert('Login com sucesso');
                     history.push('/producer');
+                    window.location = "/producer";
+
                 }
                 if(json.message === 'Error 404'){
                     alert("Database has some problems")

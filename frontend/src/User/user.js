@@ -19,11 +19,11 @@ var columns_grid = [
 
 
 var columns_grid_values = [
-    { key: 'id', name: 'ID' },
-    { key: 'value', name: 'Value' },
-    { key: 'type', name: 'Type' },
-    { key: 'timestamp', name: 'Time' },
-    { key: 'device', name: 'Device' }];
+    { key: 'id', name: 'id' },
+    { key: 'value', name: 'value' },
+    { key: 'type', name: 'type' },
+    { key: 'timestamp', name: 'time' },
+    { key: 'device', name: 'device' }];
 
 const style = {
     backgroundColor: '#01A9DB',
@@ -31,6 +31,9 @@ const style = {
 };
 
 var device_combobox = [];
+var producer_combobox = [];
+var type_combobox = [];
+var model_combobox = [];
 
 const submit_style = {
     marginTop: 30,
@@ -71,6 +74,10 @@ class Menu extends Component {
             first_time: '1',
             value: '',
             combobox_state: '',
+            value_producer: '',
+            value_type: '',
+            value_model: '',
+
         }
 
 
@@ -83,6 +90,9 @@ class Menu extends Component {
         this.api_device_monitor = this.api_device_monitor.bind(this);
         this.api_init = this.api_init.bind(this);
         this.onChangecombobox = this.onChangecombobox.bind(this);
+        this.onChangecombobox_producer = this.onChangecombobox_producer.bind(this);
+        this.onChangecombobox_type = this.onChangecombobox_type.bind(this);
+        this.onChangecombobox_model = this.onChangecombobox_model.bind(this);
     }
 
     rowGetter(i) {
@@ -140,11 +150,95 @@ class Menu extends Component {
             }).catch(error => {
             console.error(error);
         });
+
+        fetch('http://localhost:3000/api/producer/producers/all', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: 'username=' + this.state.producer + '&token=' + this.state.token
+        })
+            .then(response => response.json())
+            .then(json => {
+                if (json.message === 'ok') {
+
+                    producer_combobox = json.producers;
+
+                }
+                else {
+                    alert("Problem models");
+
+                }
+            }).catch(error => {
+            console.error(error);
+        });
+
+        fetch('http://localhost:3000/api/producer/producers/model', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: 'username=' + this.state.producer + '&token=' + this.state.token
+        })
+            .then(response => response.json())
+            .then(json => {
+                if (json.message === 'ok') {
+
+                    model_combobox = json.models;
+                }
+                else {
+                    alert("Problem models");
+
+                }
+            }).catch(error => {
+            console.error(error);
+        });
+
+        fetch('http://localhost:3000/api/producer/producers/type', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: 'username=' + this.state.producer + '&token=' + this.state.token
+        })
+            .then(response => response.json())
+            .then(json => {
+                if (json.message === 'ok') {
+
+                    type_combobox = json.types;
+
+
+                }
+                else {
+                    alert("Problem type");
+
+                }
+            }).catch(error => {
+            console.error(error);
+        });
     }
 
     onChangecombobox(value) {
         this.setState({value});
         this.state.value = value;
+        console.log('Boolean Select value changed to', value);
+    }
+
+    onChangecombobox_producer(value) {
+        this.setState({value});
+        this.state.value_producer = value;
+        console.log('Boolean Select value changed to', value);
+    }
+
+    onChangecombobox_type(value) {
+        this.setState({value});
+        this.state.value_producer = value;
+        console.log('Boolean Select value changed to', value);
+    }
+
+    onChangecombobox_model(value) {
+        this.setState({value});
+        this.state.value_producer = value;
         console.log('Boolean Select value changed to', value);
     }
 
@@ -163,6 +257,7 @@ class Menu extends Component {
                     if (json.message === 'ok') {
 
                         rows = json.rows;
+                        number_rows = json.number_rows;
                     }
                     else if (json.message === 'Devices empty') {
                         alert("List of devices empty");
@@ -193,7 +288,77 @@ class Menu extends Component {
 
 
     api_device_add() {
+
+
+
         if (this.state.button_clicked_device_regist == '0') {
+
+            fetch('http://localhost:3000/api/producer/producers/all', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: 'username=' + this.state.producer + '&token=' + this.state.token
+            })
+                .then(response => response.json())
+                .then(json => {
+                    if (json.message === 'ok') {
+
+                        producer_combobox = json.producers;
+
+                    }
+                    else {
+                        alert("Problem models");
+
+                    }
+                }).catch(error => {
+                console.error(error);
+            });
+
+            fetch('http://localhost:3000/api/producer/producers/model', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: 'username=' + this.state.producer + '&token=' + this.state.token
+            })
+                .then(response => response.json())
+                .then(json => {
+                    if (json.message === 'ok') {
+
+                        model_combobox = json.models;
+                    }
+                    else {
+                        alert("Problem models");
+
+                    }
+                }).catch(error => {
+                console.error(error);
+            });
+
+            fetch('http://localhost:3000/api/producer/producers/type', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: 'username=' + this.state.producer + '&token=' + this.state.token
+            })
+                .then(response => response.json())
+                .then(json => {
+                    if (json.message === 'ok') {
+
+                        type_combobox = json.types;
+
+
+                    }
+                    else {
+                        alert("Problem type");
+
+                    }
+                }).catch(error => {
+                console.error(error);
+            });
+
             this.setState({
                 component: '1',
                 button_clicked_device_regist: '1',
@@ -299,7 +464,7 @@ class Menu extends Component {
                     if (json.message === 'ok') {
 
                         rows_values = json.rows;
-                        alert(rows_values);
+                        number_rows = json.number_rows;
                     }
                     else if (json.message === 'Devices empty') {
                         alert("List of devices empty");
@@ -376,8 +541,8 @@ class Menu extends Component {
         })
             .then(response => response.json())
             .then(json => {
-                if (json.message === 'ok') {
-
+                if (json.message === 'Device removed') {
+                    alert("Device removed");
                 }
                 else {
                     alert("devices not found");
@@ -386,6 +551,10 @@ class Menu extends Component {
             }).catch(error => {
             console.error(error);
         });
+        this.setState({
+            component: '0',
+            button_clicked_monitor: '0',
+        })
     }
 
     handleClickState() {
@@ -431,6 +600,14 @@ class Menu extends Component {
                 <div>
                     <MuiThemeProvider>
                         <div>
+                            <br/>
+                            <br/>
+                            <br/>
+                            <br/>
+                            <br/>
+                            <br/>
+                            <br/>
+                            <br/>
                             <AppBar
                                 title="Register device"
                                 iconElementLeft={<i className=" fa fa-address-card-o fa-adjust fa-3x"></i>}
@@ -442,26 +619,38 @@ class Menu extends Component {
                                 onChange={(event, newValue) => this.setState({device_name: newValue})}
                             />
                             <br/>
-                            <TextField
-                                hintText="Enter the device type"
-                                floatingLabelText="device type"
-                                required="required"
-                                onChange={(event, newValue) => this.setState({device_type: newValue})}
-                            />
+                            <div className="section">
+                                <h3 className="section-heading">{this.props.label}</h3>
+                                <Select
+                                    onChange={this.onChangecombobox_type}
+                                    options={type_combobox}
+                                    simpleValue
+                                    value={this.state.value_type}
+                                    clearable="false"
+                                />
+                            </div>
                             <br/>
-                            <TextField
-                                hintText="Enter the model"
-                                required="required"
-                                floatingLabelText="device model"
-                                onChange={(event, newValue) => this.setState({device_model: newValue})}
-                            />
+                            <div className="section">
+                                <h3 className="section-heading">{this.props.label}</h3>
+                                <Select
+                                    onChange={this.onChangecombobox_model}
+                                    options={model_combobox}
+                                    simpleValue
+                                    value={this.state.value_model}
+                                    clearable="false"
+                                />
+                            </div>
                             <br/>
-                            <TextField
-                                hintText="Enter the producer"
-                                required="required"
-                                floatingLabelText="producer"
-                                onChange={(event, newValue) => this.setState({producer: newValue})}
-                            />
+                            <div className="section">
+                                <h3 className="section-heading">{this.props.label}</h3>
+                                <Select
+                                    onChange={this.onChangecombobox_producer}
+                                    options={producer_combobox}
+                                    simpleValue
+                                    value={this.state.value_producer}
+                                    clearable="false"
+                                />
+                            </div>
                             <br/>
                             <RaisedButton label="Submit" primary={true} style={submit_style}
                                           onClick={(event) => this.handleClickRegisterDevice()}/>
@@ -535,7 +724,7 @@ class Menu extends Component {
                                 <ReactDataGrid
 
                                     columns={columns_grid}
-                                    rowsCount={50}
+                                    rowsCount={number_rows}
                                     minHeight={200}
                                     rowGetter={this.rowGetter}
 
@@ -610,17 +799,17 @@ class Menu extends Component {
             mainModule =
                 <div>
                     <MuiThemeProvider >
-                        <div>
+                        <div >
                             <div className="activity">
                                 <AppBar
-                                    title="Device monitor"
+                                    title="Device history"
                                     iconElementLeft={<i className=" fa fa-address-card-o fa-adjust fa-3x"></i>}
 
                                 />
                                 <ReactDataGrid
 
                                     columns={columns_grid_values}
-                                    rowsCount={500}
+                                    rowsCount={number_rows}
                                     minHeight={200}
                                     rowGetter={this.rowGetter_values}
 
@@ -628,6 +817,7 @@ class Menu extends Component {
                                     //withColumnMenu={false}
                                 />
                             </div>
+
                             <br/>
                             <br/>
                             <br/>

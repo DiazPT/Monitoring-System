@@ -97,12 +97,6 @@ app.post('/api/user/register', function(req, res) {
 
 });
 
-/* Consults user's device history */
-app.post('/api/user/devices', function(req, res) {
-  res.header("Access-Control-Allow-Origin", "*");
-  console.log('[User API] TO DO: Consult user\'s device history.');
-  res.send({message : 'TO DO: Consult user\'s device history.'});
-});
 
 /* Consults user's history */
 app.post('/api/user/history', function(req, res) {

@@ -188,9 +188,31 @@ app.post('/api/device/remove', function (req, res) {
                 models.Device.remove({name: req.body.device}, function (err, removed) {
                     console.log(removed + ' device removed.');
                     User.devices.pull(req.body.device);
-                    models.Producer.findOne({name: producer_removing}, function (err, producer_device_removed) {
-                        producer_device_removed.devices.pull(req.body.device);
+                    User.save(function (err) {
+                        if (err) {
+                            console.error("Error on saving new record");
+                            console.error(err); // log error to Terminal
+
+
+                        } else {
+                            models.Producer.findOne({name: producer_removing}, function (err, producer_device_removed) {
+                                producer_device_removed.devices.pull(req.body.device);
+                                producer_device_removed.save(function (err) {
+                                    if (err) {
+                                        console.error("Error on saving new record");
+                                        console.error(err); // log error to Terminal
+
+
+                                    } else {
+                                        res.json({
+                                            message: 'Device removed'
+                                        })
+                                    }
+                                });
+                            });
+                        }
                     });
+
                 });
             });
 
@@ -324,25 +346,35 @@ app.post('/api/device/value_history', function (req, res) {
             async.forEach(User.devices, function (Device_user, callback1) {
 
 
-                //console.log(i);
-
 
 
                 models.Device.findOne({name: Device_user}, function (err, Device_added) {
 
 
-                    async.forEach(Device_added.readings, function (reading, callback2) {
-                        p++;
+                    async.forEach(Device_added.readings, function (read, callback2) {
+
+                        var value_string =  read.substring(read.indexOf(':')+3, read.indexOf(',')-1);
+
+                        //console.log(read);
+                        var type_string =  read.substring(read.indexOf('type: ')+7, read.indexOf('timestamp')-5);
+                        var timestamp_string =  read.substring(read.indexOf('timestamp: ')+12, read.indexOf('_id')-5);
+                        //console.log(value_string);
+
+                        //console.log(type_string);
+                        //console.log(timestamp);
+                        //console.log(read);
                         all_devices.push({
                             id: p,
-                            value: reading.value,
-                            type: reading.type,
-                            timestamp : reading.timestamp,
+                            value: value_string,
+                            type: type_string,
+                            timestamp : timestamp_string,
                             device: Device_added.name,
                         });
+                        //console.log(all_devices[p]);
 
+                        p++;
                     });
-
+                p=0;
 
                 });
             });
@@ -356,7 +388,7 @@ app.post('/api/device/value_history', function (req, res) {
                 sent++;
 
                 setTimeout(function(){
-                    console.log(all_devices);
+                    //console.log(all_devices);
                     res.json({
                         message: 'ok',
                         rows: all_devices,
@@ -376,7 +408,7 @@ app.post('/api/device/value_history', function (req, res) {
 /* Changes the state of a device */
 app.post('/api/device/state', function (req, res) {
     res.header("Access-Control-Allow-Origin", "*");
-    console.log('[Device API] TO DO: Change the state of a device.');
+    console.log('[Device API] Change the state of a device.');
     models.User.findOne({username: req.body.username, token: req.body.token}, function (err, User) {
         if (User === null) {
             console.log("nao da");
@@ -414,7 +446,6 @@ app.post('/api/device/state', function (req, res) {
                             })
                                 .then(response => response.json())
                                 .then(json => {
-                                    console.log(json.result);
                                     if (json.result === '0') {
                                         console.log("Changed state");
                                         res.json({

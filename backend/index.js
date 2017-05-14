@@ -43,11 +43,10 @@ app.post('/api/login', function(req, res) {
 
                         res.json({
                             token: token,
-                            io:io,
                             message: 'Login producer'
                         })
 
-                        recordmodel.User.findOne({username: req.body.username}, function(err, contact) {
+                        recordmodel.Producer.findOne({username: req.body.username}, function(err, contact) {
 
                             contact.token = token;
                             contact.save(function(err) {
